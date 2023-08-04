@@ -9,6 +9,9 @@ The conversion is rather fast and can be made in batch. The advantage of this so
 - the fact that variables can be defined at the beginning of the `md` module file using YAML. The variables are then passed to Latex and can be used in the template for further processing.
 - the output is PDF, with the (not yet implemented) possibility to create the corresponding HTML output.
 
+## Sample output
+![Sample output](output.png)
+
 ## Repository content
 This repository contains a set of script files (in `build_tool`), the corresponding LaTex template for the lab as well as some examples (in the `samples` directory).
 
