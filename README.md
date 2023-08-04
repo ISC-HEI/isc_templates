@@ -10,7 +10,7 @@ The conversion is rather fast and can be made in batch. The advantage of this so
 - the output is PDF, with the (not yet implemented) possibility to create the corresponding HTML output.
 
 ## Sample output
-![Sample output](output.png)
+<img src="output.png" width="50%" height="50%">
 
 ## Repository content
 This repository contains a set of script files (in `build_tool`), the corresponding LaTex template for the lab as well as some examples (in the `samples` directory).
