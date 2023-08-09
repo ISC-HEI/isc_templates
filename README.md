@@ -68,7 +68,8 @@ The toolchain has been tested on Debian based distros (Ubuntu on WSL2, native De
 
 ### General Linux dependencies (for Debian based distros)
 Quick install (but not minimal):
-```
+
+```bash
 apt install parallel rename libsrvg2-bin
 apt install texlive-full
 ```
@@ -87,7 +88,7 @@ In order to build the PDF from the `samples/sample_lab/lab-expressions.md` file,
 
 If no file is specified, the first `md` file is compiled 
 
-```
+```bash
 ~/build_tool/build_pandoc.sh
 ```
 
