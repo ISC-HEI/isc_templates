@@ -1,5 +1,48 @@
-# Conversion from GFM markdown to PDF, for ISC labs
-This toolchain uses [pandoc](https://pandoc.org/) for writing labs in Markdown (in its gfm flavour) for the [ISC curricula](https://isc.hevs.ch). 
+# ISC Templates for exams, labs and series
+Do you want to write good-looking documents for your exams, exercise sets and labs for the [ISC curricula](https://isc.hevs.ch), but find it too time-consuming to produce consistent results? Then this repository is for you!
+
+Here you'll find tools for writing : 
+- written exams (and their solutions)
+- oral exams 
+- series of exercises (with their solutions too)
+- laboratories 
+
+# Preamble
+Unfortunately, for the moment, two different sets tools of tools are used to build the different types of documents. 
+
+Because exams and exercises are based on different categories of questions (MCQs, true/false, long questions, etc.), describing those documents requires a certain amount of granularity for automatic management. This flexibility is achieved with the help of regular LaTex documents along with a set of tools that are used to automatically compute the number of points in an exam for the scale, to produce the solution in the same document, etc.
+
+For laboratories and oral exams, on the other hand, the granularity is less fine (and there is no solution for students to give in a written document). It is therefore possible to simplify the writing process by describing the content in Markdown format. PDF documents are generated automatically from this simple and effective description using the `pandoc` toolchain. As a result, previewing and working with the documents is straightforward, simple and with beautiful results.
+
+In the future, there are plans to unify the two toolchains by offering a Markdown extension to categorize questions and answers, but for the moment this remains a work-in-progress (but feel free to contribute if you are interested !)
+
+Have fun teaching,
+Pierre-André
+
+---
+
+# Toolchain 1 : LaTex toolchain for exams and series
+
+This is not really a toolchain but a set of LaTex files and scripts for building nice series and exams, based on the `exam` class made by Philip Hirschorn (https://math.mit.edu/~psh/exam/examdoc.pdf). The general look-and-feel has been heavily tailored for the ISC programme and several things have been customized or adapted for the context of computer science. 
+
+## Installing
+The single prerequisite for using this toolchain is having a decently recent installation of LaTex accessible in your system as well a Linux for using the build script. If you don't like Linux or don't want to use it, it is of course possible to compile the samples but you are on your own. 
+
+> _What is used ?_
+>
+> The template file used for compiling the LaTex samples is located in the `texcommon`. 
+> Yes, I know, the logo files are replicated twice (once for each toolchain) and this is ugly. This is intended, even if it's a bit sad. Deal with it.
+
+## Samples
+There are two sample example : one for an exam and a second for a series of exercises (see `xxx-sample.tex` that can be compiled with the corresponding `build.sh` script). The script builds both the solution and the hand-in document for the students.
+
+The final result looks like this : 
+
+
+
+---
+# Toolchain 2 : `pandoc` for converting GFM markdown to PDF, for ISC labs
+This toolchain uses [pandoc](https://pandoc.org/) for writing labs in Markdown (in its gfm flavour). 
 
 The heavy lifting for converting `markdown` to `pdf` is made using `pandoc` with a LaTex template based [on the Wandmalfarbe](https://github.com/Wandmalfarbe/pandoc-latex-template) solution. 
 
@@ -31,7 +74,7 @@ Please install `pandoc` latest version from here `https://github.com/jgm/pandoc/
 ## Compiling a lab with the toolchain
 Clone this repository somewhere in your filesystem. Let's consider that the toolchain is installed in `~/build_tool/`. 
 
-In order to build the PDF from the `lab01.md` file, run from the location the `md` you want to compile is located :
+In order to build the PDF from the `samples/sample_lab/lab-expressions.md` file, run from the location the `md` you want to compile is located :
 
 ```bash
 ~/build_tool/build_pandoc.sh -n lab-expressions.md

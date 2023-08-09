@@ -1,0 +1,227 @@
+% Exercise document template for the informatics course given
+% at HES-SO Valais // Wallis for the ISC programme
+% @author Pierre-André Mudry, pierre-andre.mudry@hevs.ch
+% @version 1.3
+% @date September 2009
+% @revision October 2010
+% @revision August 2023
+\newcommand{\path}{../../texcommon/}
+
+\def\shorttitle{Série 2}
+\def\complementtitle{Expressions}
+\def\rev{1.05}
+
+%%%% Define this to generate the solution directly (if compiling manually for instance)
+%%%% You don't need to change this if you are using the build.sh script as both versions are build
+%%%% simultaneously
+
+%\def\withanswers{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\longtitle{\shorttitle{} -- \complementtitle}
+\newcommand{\thetitle}{\longtitle}
+
+% Allows flags at compile time
+\ifdefined\withanswers
+	\documentclass[10pt, a4paper, answers]{\path exam}	
+	\setlength\answerlinelength{5.5cm}
+\else
+	\documentclass[10pt, a4paper, noanswers]{\path exam}
+\fi 
+ 
+\input{\path options}
+
+% % Here we go
+\begin{document}
+
+% Title 
+{
+	\begin{center}
+
+		\ifprintanswers{}
+		\huge{\textbf{\shorttitle -- Solution}}\\
+		\else
+		\huge{\textbf{\thetitle}}\\
+		\fi
+		
+		\large \textit {101.1 Programmation impérative}\\
+	\end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Let's start asking things
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{questions}
+
+\question
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Quel est le type (au sens informatique du terme) des expressions suivantes (on suppose \texttt{n} entier) ? 
+
+\begin{parts}
+	\part \verb$3 % 4$ \answerline[Int]
+	\part \verb$(10 >> 2)  & 2$ \answerline[Int]
+	\part \verb$true && (n < 5)$ \answerline[Boolean]
+	\part \verb$"Exercise" + "3.1f"$ \answerline[String]
+	\part \verb$if(n > 43) 4.0 else 2.0$ \answerline[Double]
+\end{parts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Soient les déclarations suivantes :
+\begin{scala}
+val n: Int = 10; val p: Int = 4
+val q: Long = 2; val x: Float = 1.76f;
+\end{scala}
+
+Donnez le type \textbf{ainsi que} la valeur des expressions suivantes :
+\begin{parts}
+	\part \begin{verbatim}n+q\end{verbatim} \answerline[Long, 12]
+	\part \begin{verbatim}n < p\end{verbatim} \answerline[Boolean, false]
+	\part \begin{verbatim}n % p + q\end{verbatim} \answerline[Long, 4]
+	\part \begin{verbatim}n+x\end{verbatim} \answerline[Float, 11.76f]
+	\part \begin{verbatim}n >= p\end{verbatim} \answerline[Boolean, true]
+	\part \begin{verbatim}n > q + 8\end{verbatim} \answerline[Boolean, false]
+\end{parts}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Quelle est la valeur de \texttt{x} \emph{après} l'exécution des instructions suivantes ?
+\begin{parts}
+	\part \begin{verbatim}var x: Int = if (30 > -30) 10 % 3 else 10 % 5\end{verbatim} \answerline[1]
+	\part \begin{verbatim}var x: Double = 0.1; x *= 45.3\end{verbatim} \answerline[4.53]
+	\part \begin{verbatim}var x: Int = 10; x ^= 3\end{verbatim}\answerline[9]
+	\part \begin{verbatim}var x: Int = 0xc0f0; var y: Int = 0x0a0e; x |= y\end{verbatim}\answerline[0xcafe]
+	\part \begin{verbatim}var x: Int = 10; x /= 3\end{verbatim} \answerline[3]
+	\part \begin{verbatim}var x: String = "Hello"; var y: String = "toto"; x+=y \end{verbatim} \answerline["Hellototo"]
+	\part \begin{verbatim}var x: String = "Hello" + 3 + 4\end{verbatim} \answerline["Hello34"]
+	\part \begin{verbatim}var x: String = "Hello" + (3 + 4)\end{verbatim} \answerline["Hello7"]
+	\part \begin{verbatim}var x: Double = 3.0; x /= 3.0\end{verbatim} \answerline[1.0]
+\end{parts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Lesquelles de ces assignations sont valides ?
+
+\truefalse{\texttt{val a: Int = 3.2}}{false}
+\truefalse{\texttt{val b: Double = 4}}{true}
+\truefalse{\texttt{val c: Int = (3 << 2.1).toByte}}{false}
+\truefalse{\texttt{val d: Long = (121.22f).toLong}}{true}
+\truefalse{\texttt{val e: Int = (24 / 21.11).toInt}}{true}
+\truefalse{\texttt{val f: Char = 'c'+1;}}{false}
+\truefalse{\texttt{val g: Float = (3 / 4.2);}}{false}
+\truefalse{\texttt{val h: Boolean = (f > g) \& 2;}}{false}
+\truefalse{\texttt{val i: Boolean = (e >> f) < d;}}{true}
+\truefalse{\texttt{val j: Boolean = (a == c);}}{true}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Écrivez, lorsque cela est possible, les assignations suivantes dans leur forme courte:
+\begin{parts}
+	\part \begin{verbatim}x = x-1;\end{verbatim} \answerline[x-=1]
+	\part \begin{verbatim}x = x+1;\end{verbatim} \answerline[x+=1]
+	\part \begin{verbatim}x = x*4;\end{verbatim} \answerline[x*=4]
+	\part \begin{verbatim}x = x + "toto";\end{verbatim} \answerline[x += ''toto'']
+	\part \begin{verbatim}x = -2;\end{verbatim} \answerline[x = -2, pas de forme courte]
+	\part \begin{verbatim}x = x / 10;\end{verbatim} \answerline[x /= 10]
+	\part \begin{verbatim}x = 10 / x;\end{verbatim} \answerline[x = 10 / x, pas de forme courte]
+\end{parts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Les parenthèses sont là surtout pour nous faciliter la lecture. Un compilateur n'a pas besoin de parenthèses. Ajoutez des parenthèses aux expressions suivantes selon la priorité des opérateurs appliquée par le compilateur. 
+
+\begin{parts}
+	\part
+	\verb$+ a < ~ a$
+
+	\part
+	\verb$-30 - 20 / 2 * 10$
+	
+	\part
+	\verb$-x != y + 3 * 2$
+	
+	\part
+	\verb$a / b * c / d$
+\end{parts}
+
+\begin{solution}
+	\begin{verbatim_lst}
+((+ a) < (~ a))
+(-30) - ((20 / 2) * 10)
+(-x) != (y + (3 * 2))
+(((a / b) * c) / d)		
+	\end{verbatim_lst}
+\end{solution}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\question
+%%%%%%%%%%%%%%%%%%%%%%%%
+Vous avez à disposition le code suivant : 
+
+\begin{scala}
+val foo: Int = 0xFACE
+\end{scala}
+
+\begin{parts}
+
+\part
+A l'aide des opérateurs vus au cours, faites en sorte d'afficher sur la console le contenu de la variable \texttt{foo} sur la console comme suit :
+
+\begin{verbatim_lst}
+The value in hex is 0xface	
+\end{verbatim_lst}
+
+\part ~ [\,\textbf{Optionnel} ]\ Un peu plus difficile. Sans vous servir de votre ordinateur, écrivez le code pour faire en sorte d'afficher la valeur binaire comme suit. \warning ~Attention aux espaces~\warning :
+
+\begin{verbatim_lst}
+In binary it's 0b1111 1010 1100 1110
+\end{verbatim_lst}
+
+\begin{solutionorbox}[8cm]
+\begin{scala}
+val foo: Int = 0xFACE
+
+println("The value in hex is 0x" + foo.toHexString)
+
+println("In binary it's 0b"
+	+ ((foo >> 12) & 0XF).toBinaryString
+	+ " " + ((foo >> 8) & 0xF).toBinaryString
+	+ " " + ((foo >> 4) & 0XF).toBinaryString
+	+ " " + (foo & 0xF).toBinaryString)
+\end{scala}
+\end{solutionorbox}
+
+\end{parts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\question
+%%%%%%%%%%%%%%%%%%%%%%%%
+Soient les variables suivantes :
+\begin{scala}
+val a: Int = 3; val b: Byte = 2; val c: Char = 10; val d: Double = 4.5f;
+\end{scala}
+
+Quel est le type des expressions suivantes ?
+
+\begin{subparts}
+	\subpart \verb$a+b$ \answerline[Int]
+	\subpart \verb$(d + b).toShort$ \answerline[Short]
+	\subpart \verb$d * a$ \answerline[Double]
+	\subpart \verb$c / b$ \answerline[Int]
+	\subpart \verb$a+b+c+d$ \answerline[Double]
+\end{subparts}
+
+\end{questions}
+
+% This is the end folks !
+\end{document}

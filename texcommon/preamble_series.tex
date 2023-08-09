@@ -1,0 +1,26 @@
+\def\longtitle{\shorttitle{} -- \complementtitle}
+\newcommand{\thetitle}{\longtitle}
+
+\ifdefined\withanswers
+	\documentclass[10pt, a4paper, answers]{\path exam}	
+	\setlength\answerlinelength{5.5cm}
+\else
+	\documentclass[10pt, a4paper, noanswers]{\path exam}
+\fi 
+
+% % Here we go
+\begin{document}
+
+% Title 
+{
+\begin{center}
+
+\ifprintanswers{}
+	\huge{\textbf{\shorttitle -- Solution}}\\
+\else
+	\huge{\textbf{\thetitle}}\\
+\fi
+ 
+\large \textit {101.1 Programmation impérative}\\
+\end{center}
+} 
