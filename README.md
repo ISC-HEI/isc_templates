@@ -2,10 +2,10 @@
 Do you want to write good-looking documents for your exams, exercise sets and labs for the [ISC curricula](https://isc.hevs.ch), but find it too time-consuming to produce consistent results? Then this repository is for you!
 
 Here you'll find tools for writing : 
-- written exams (and their solutions)
-- oral exams 
-- series of exercises (with their solutions too)
-- laboratories 
+- [written exams](samples/sample_written_exam/exam-sample.pdf) (and their [solutions](samples/sample_written_exam/exam-sample-sol.pdf))
+- [series of exercises](samples/sample_series/serie-sample.pdf) (with their [solutions too](samples/sample_series/serie-sample.pdf))
+- [laboratories](samples/sample_lab/lab-expressions.pdf)
+- oral exams (not included in this repo, yet)
 
 # Preamble
 Unfortunately, for the moment, two different sets tools of tools are used to build the different types of documents. 
