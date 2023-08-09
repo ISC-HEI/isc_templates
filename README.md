@@ -16,7 +16,7 @@ For laboratories and oral exams, on the other hand, the granularity is less fine
 
 In the future, there are plans to unify the two toolchains by offering a Markdown extension to categorize questions and answers, but for the moment this remains a work-in-progress (but feel free to contribute if you are interested !)
 
-Have fun teaching,
+Have fun teaching :computer:
 Pierre-André
 
 ---
@@ -34,11 +34,7 @@ The single prerequisite for using this toolchain is having a decently recent ins
 > Yes, I know, the logo files are replicated twice (once for each toolchain) and this is ugly. This is intended, even if it's a bit sad. Deal with it.
 
 ## Samples
-There are two sample example : one for an exam and a second for a series of exercises (see `xxx-sample.tex` that can be compiled with the corresponding `build.sh` script). The script builds both the solution and the hand-in document for the students.
-
-The final result looks like this : 
-
-
+There are two sample example : one for an exam and a second for a series of exercises (see `xxx-sample.tex` that can be compiled with the corresponding `build.sh` script). The script builds both the solution and the hand-in document for the students. Have a look in the `samples` directories to see the results for the different document types.
 
 ---
 # Toolchain 2 : `pandoc` for converting GFM markdown to PDF, for ISC labs
@@ -90,4 +86,6 @@ If no file is specified, the first `md` file is compiled
 It is also possible to run compilation every time the source file is changed by using the `build_continuous.sh` script.
 
 # Questions and help
-If you need any help for installing or running this tool, do not hesitate to get in touch with its maintainer. You can of course also propose changes using PR or raise issues if something is not clear. Have fun teaching !
+If you need any help for installing or running those tools, do not hesitate to get in touch with its maintainer. 
+
+You can of course also propose changes using PR or raise issues if something is not clear. Have fun teaching !
