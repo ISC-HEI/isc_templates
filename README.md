@@ -13,7 +13,7 @@ Do you want to write good-looking documents for your exams, exercise sets and la
 Here you'll find tools for writing : 
 - [written exams](samples/sample_written_exam/exam-sample.pdf) (and their [solutions](samples/sample_written_exam/exam-sample-sol.pdf))
 - [series of exercises](samples/sample_series/serie-sample.pdf) (with their [solutions too](samples/sample_series/serie-sample.pdf))
-- [laboratories](samples/sample_lab/lab-expressions.pdf)
+- [laboratories as PDF files](samples/sample_lab/lab-expressions.pdf) or as [HTML files](samples/sample_lab_html/html/lab-fp.html)
 - oral exams (not included in this repo, yet)
 
 # Preamble
@@ -74,24 +74,6 @@ apt install parallel rename librsvg2-bin
 apt install texlive-full
 ```
 
-## HTML output
-For continuous update during development, I use (even if not really required but so comfy to use) 
-
-```bash
-gem install filewatcher
-gem install filewatcher-cli
-```
-
-and then
-
-```bash
-./build_html.sh
-```
-
-The output is very nice as it is a single HTML file !
-
-The template is embedded in the repository.
-
 ---  
 
 ### Installing Pandoc 
@@ -108,12 +90,32 @@ In order to build the PDF from the `samples/sample_lab/lab-expressions.md` file,
 
 If no file is specified, the first `md` file is compiled 
 
-```bash
+```bash 
 ~/build_tool/build_pandoc.sh
 ```
 
 ### Continuous compilation
 It is also possible to run compilation every time the source file is changed by using the `build_continuous.sh` script.
+
+## Compiling with HTML output
+For HTML output, `pandoc` is used as well. Different themes are provided and even though the results are not perfect so far, it works. To see how it works, go to `samples/sample_lab_html` and run the corresponding `.sh` files. The output looks like this : 
+
+<img src="output_html.png" width="50%" height="50%">
+
+For continuous update during development, I use (even if not really required but so comfy to use) 
+
+```bash
+gem install filewatcher
+gem install filewatcher-cli
+```
+
+and then
+
+```bash
+./build_html.sh
+```
+
+The output is very nice as it is a single HTML file ! The different templates are embedded in the `build_tool` directory.
 
 # Questions and help
 If you need any help for installing or running those tools, do not hesitate to get in touch with its maintainer. 
