@@ -70,7 +70,7 @@ The toolchain has been tested on Debian based distros (Ubuntu on WSL2, native De
 Quick install (but not minimal):
 
 ```bash
-apt install parallel rename libsrvg2-bin
+apt install parallel rename librsvg2-bin
 apt install texlive-full
 ```
 

@@ -784,8 +784,7 @@ $if(listings)$
 %   numbers          = left,
 %   xleftmargin      = 2.7em,
 %   framexleftmargin = 2.5em,
-% $endif$
-  language     = ,
+% $endif$  
   upquote      = true,
   breaklines   = false,
   tabsize      = 2,
@@ -934,6 +933,37 @@ $if(listings)$
   stringstyle      = \color{listing-string}
 }[keywords,comments,strings]
 
+
+\lstdefinelanguage{C}{
+  style = framed,
+  numbers = left,
+  numberstyle = {\scriptsize \color{listing-numbers}\noncopynumber},
+  stepnumber =1,
+  numbersep = 15pt,
+  basicstyle={\footnotesize\ttfamily\color{hei_dark}},
+  morekeywords={
+    auto,break,case,char,const,continue,default,do,double,%
+    else,enum,extern,float,for,goto,if,int,long,register,return,%
+    short,signed,sizeof,static,struct,switch,typedef,union,unsigned,%
+    void,volatile,while%
+    },
+  sensitive=true,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]//,
+  morestring=[b]",
+  morestring=[b]',
+  moredelim=*[directive]\#,
+  keywordstyle     = {\color{listing-keyword}},
+  keywordstyle     = {[2]\color{listing-keyword-2}\bfseries},
+  keywordstyle     = {[3]\color{listing-keyword-3}\bfseries\itshape},
+  identifierstyle  = \color{listing-identifier},
+  commentstyle     = {\color{listing-comment}\itshape},
+  stringstyle      = \color{listing-string},
+  moredirectives={
+    define,elif,else,endif,error,if,ifdef,ifndef,line,
+    include,pragma,undef,warning
+  }
+}[keywords,comments,strings]
 
 % Let mdframed do the frame (to remove the border that goes too far)
 \newcommand*\continuingfont{\scriptsize\itshape}
