@@ -1,0 +1,1 @@
+filewatcher *.md 'echo "Building everytime the file changes..." ; ./build_html.sh'

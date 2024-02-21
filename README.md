@@ -46,10 +46,10 @@ The single prerequisite for using this toolchain is having a decently recent ins
 There are two sample example : one for an exam and a second for a series of exercises (see `xxx-sample.tex` that can be compiled with the corresponding `build.sh` script). The script builds both the solution and the hand-in document for the students. Have a look in the `samples` directories to see the results for the different document types.
 
 ---
-# Toolchain 2 : `pandoc` for converting GFM markdown to PDF, for ISC labs
-This toolchain uses [pandoc](https://pandoc.org/) for writing labs in Markdown (in its gfm flavour). 
+# Toolchain 2 : `pandoc` for converting GFM markdown to PDF and/or HTML, for ISC labs
+This toolchain uses [pandoc](https://pandoc.org/) for writing labs in Markdown (in its `gfm` flavour). 
 
-The heavy lifting for converting `markdown` to `pdf` is made using `pandoc` with a LaTex template based [on the Wandmalfarbe](https://github.com/Wandmalfarbe/pandoc-latex-template) solution. 
+The heavy lifting for converting `markdown` to `pdf` is made using `pandoc` with a LaTex template based [on the Wandmalfarbe](https://github.com/Wandmalfarbe/pandoc-latex-template) solution. The conversion to HTML is made with the same tools and `easy-pandoc-templates` from https://github.com/ryangrose/easy-pandoc-templates which has a nice TOC on the side but I finally chose to use `Github.html5` instead.
 
 The conversion is rather fast and can be made in batch. The advantage of this solution resides in 
 - writing Markdown is much faster and easier than plain Tex
@@ -73,6 +73,26 @@ Quick install (but not minimal):
 apt install parallel rename libsrvg2-bin
 apt install texlive-full
 ```
+
+## HTML output
+For continuous update during development, I use (even if not really required but so comfy to use) 
+
+```bash
+gem install filewatcher
+gem install filewatcher-cli
+```
+
+and then
+
+```bash
+./build_html.sh
+```
+
+The output is very nice as it is a single HTML file !
+
+The template is embedded in the repository.
+
+---  
 
 ### Installing Pandoc 
 Please install `pandoc` latest version from here `https://github.com/jgm/pandoc/releases/tag/3.1.2` or newer, following the instructions. Please do not use `apt` for installing `pandoc` as the packages are largely outdated (at least for older Ubuntu distributions).
