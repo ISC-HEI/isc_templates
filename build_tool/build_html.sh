@@ -44,8 +44,8 @@ pushd "$DIR" || exit
 pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --katex --data-dir="$SCRIPT_DIR/html_templates" --template="GitHub2.html5" --toc --toc-depth=2 --embed-resources --standalone 
 
 if [ -n "$DEST_PDF" ]; then    
-   echo "Output generated in ${output} and copied to PDF directory ${DEST_PDF}"   
-   cp "${output}" "${DEST_PDF}"
+   echo "Output generated in ${output} and copied to directory ${DEST_PDF}"   
+   mv "${output}" "${DEST_PDF}"
 else 
    echo "Output generated in ${output}"
 fi
