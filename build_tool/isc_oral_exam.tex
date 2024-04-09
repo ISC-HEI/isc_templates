@@ -1,15 +1,21 @@
 %%
+% ISC Lab template - mui 2023
+% using prologue as a parameter in pandoc command line
+% Let's inject the metadata, and begin stuff
+%%
+
+%%
 % This is the Eisvogel pandoc LaTeX template, modified for ISC
 %
 % For usage information and examples visit the official GitHub page:
 % https://github.com/Wandmalfarbe/pandoc-latex-template
 %%
 
-
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+
 $if(dir)$
 $if(latex-dir-rtl)$
 \PassOptionsToPackage{RTLdocument}{bidi}
@@ -225,7 +231,7 @@ $endif$
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
 $if(title-meta)$
-  pdftitle={$title-meta$ -- $code$-$module$},
+  pdftitle={($ue$) $title-meta$},
 $endif$
 $if(author-meta)$
   pdfauthor={$author-meta$},
@@ -237,7 +243,7 @@ $if(subject)$
   pdfsubject={$subject$},
 $endif$
 $if(keywords)$
-  pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
+  pdfkeywords={$ue$ - $course$$for(keywords)$$keywords$$sep$, $endfor$},
 $endif$
 $if(colorlinks)$
   colorlinks=true,
@@ -249,7 +255,7 @@ $else$
   hidelinks,
 $endif$
   breaklinks=true,
-  pdfcreator={ISC module generator $generatorVersion$, using LaTeX/pandoc template made by Pierre-André Mudry}}
+  pdfcreator={ISC module generator $GENERATORVERSION$, using LaTeX/pandoc template made by Pierre-André Mudry}}
 \urlstyle{same} % disable monospaced font for URLs
 $if(verbatim-in-note)$
 \VerbatimFootnotes % allow verbatim text in footnotes
@@ -495,9 +501,7 @@ $endif$
 $endif$
 
 %%
-%% added
-%%
-
+%% mui specific%
 %
 % language specification
 %
@@ -711,13 +715,13 @@ $endif$
 
 % Specific sections formatting
 \titleformat{\section}[block]
-  {\normalfont\Large\bfseries\color{darkgray}} % filcenter to center the stuff
+  {\normalfont\Huge\bfseries\color{darkgray}} % filcenter to center the stuff
   {}
   {0pt}
   %{\vspace{-6pt}\titlerule \\ \thesection.~}[\titlerule]
   %{\colorbox{Cerulean!15}{\parbox{\textwidth}{\thesection. #1}}}
   %{\colorbox{Cerulean!15}{\parbox{\textwidth}{#1}\vspace{2pt}}}
-  {\vspace{-6pt}\titlerule \\ #1}[\titlerule]
+  {\vspace{-6pt}\titlerule \\ #1}[\titlerule\vspace{3mm}]
 
 \titleformat{\subsection}
   {\normalfont\large\bfseries}
@@ -780,8 +784,7 @@ $if(listings)$
 %   numbers          = left,
 %   xleftmargin      = 2.7em,
 %   framexleftmargin = 2.5em,
-% $endif$
-  language     = ,
+% $endif$  
   upquote      = true,
   breaklines   = false,
   tabsize      = 2,
@@ -931,6 +934,37 @@ $if(listings)$
 }[keywords,comments,strings]
 
 
+\lstdefinelanguage{C}{
+  style = framed,
+  numbers = left,
+  numberstyle = {\scriptsize \color{listing-numbers}\noncopynumber},
+  stepnumber =1,
+  numbersep = 15pt,
+  basicstyle={\footnotesize\ttfamily\color{hei_dark}},
+  morekeywords={
+    auto,break,case,char,const,continue,default,do,double,%
+    else,enum,extern,float,for,goto,if,int,long,register,return,%
+    short,signed,sizeof,static,struct,switch,typedef,union,unsigned,%
+    void,volatile,while%
+    },
+  sensitive=true,
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]//,
+  morestring=[b]",
+  morestring=[b]',
+  moredelim=*[directive]\#,
+  keywordstyle     = {\color{listing-keyword}},
+  keywordstyle     = {[2]\color{listing-keyword-2}\bfseries},
+  keywordstyle     = {[3]\color{listing-keyword-3}\bfseries\itshape},
+  identifierstyle  = \color{listing-identifier},
+  commentstyle     = {\color{listing-comment}\itshape},
+  stringstyle      = \color{listing-string},
+  moredirectives={
+    define,elif,else,endif,error,if,ifdef,ifndef,line,
+    include,pragma,undef,warning
+  }
+}[keywords,comments,strings]
+
 % Let mdframed do the frame (to remove the border that goes too far)
 \newcommand*\continuingfont{\scriptsize\itshape}
 \newcommand*\continuingtext{Listing continues on next page...}
@@ -995,8 +1029,6 @@ $endif$
 \renewenvironment{quote}{\begin{customblockquote}\list{}{\rightmargin=0em\leftmargin=0em}%
 \item\relax\color{blockquote-text}\ignorespaces}{\unskip\unskip\endlist\end{customblockquote}}
 
-
-
 %
 % header and footer
 %
@@ -1008,15 +1040,16 @@ $else$
 \usepackage{lastpage}
 \usepackage{graphicx}
 
-% Automatic loading of paths
-\graphicspath{{figs/}{../build_tool/}}
+% mui - automatic inclusion of loading of paths, to 
+% avoid reproducing the shared files in every sub-directory
+\graphicspath{{figs/}{$TOOLCHAINPATH$/}{./}}
 
-%%% Changing headers and footers for HES
+%%% Changing headers and footers for the HES / ISC logo
 \newcommand\myfontsize{\fontsize{15pt}{18pt}\selectfont}
 \newcommand{\hesfootleft}
   {
     \begin{footnotesize}
-      Dr Pierre-André Mudry $$\mid$$ \emph{$course$}
+      $for(author)$$author$$sep$, $endfor$ $$\mid$$ \emph{$ue$ $course$}      
     \end{footnotesize}
   }
 \newcommand{\hesfootmiddle}
@@ -1108,7 +1141,6 @@ $if(DRAFT)$
   \SetWatermarkLightness{0.9}
   \SetWatermarkText{DRAFT}
 $endif$
-
 %%
 %% end added
 %%
@@ -1254,27 +1286,14 @@ $if(linestretch)$
 \setstretch{$linestretch$}
 $endif$
 
-
-\input{isc_common.tex}
-
-%%%%%%%%%%%%%%%% Let's inject the metadata
-%%%%%%% And begin stuff
-
 \thispagestyle{firstpage}
 
 % For coping with the logo
 \begin{tikzpicture}[remember picture,overlay]
 	\node[anchor=north east,inner sep=0pt] at ($$(current page.north east)-(1.3cm,0.8cm)$$) {
-    \includegraphics[height=1.9cm]{figs/ISC Logo inline v1.pdf}
+    \includegraphics[height=1.9cm]{figs/ISC_logo_inline_v1.pdf}
 	};
 \end{tikzpicture}
-
-% % For coping with the logo
-% \begin{tikzpicture}[remember picture,overlay]
-% 	\node[anchor=north east,inner sep=0pt] at ($$(current page.north east)-(1.2cm,0.5cm)$$) {
-%     \includegraphics[height=1.8cm]{figs/FR-DE_HEI.pdf}
-% 	};
-% \end{tikzpicture}
 
 % % For coping with the logo
 % \begin{tikzpicture}[remember picture,overlay]
@@ -1284,7 +1303,7 @@ $endif$
 % \end{tikzpicture}
 
 {\Huge \bfseries $title$}\\
-{\large $course$\par}
+{\large $ue$ $course$\par}
 
 \vspace{1mm}
 
@@ -1297,43 +1316,6 @@ $endif$
 %% This is where the content is generated
 $body$
 
-$if(has-frontmatter)$
-\backmatter
-$endif$
-$if(natbib)$
-$if(bibliography)$
-$if(biblio-title)$
-$if(has-chapters)$
-\renewcommand\bibname{$biblio-title$}
-$else$
-\renewcommand\refname{$biblio-title$}
-$endif$
-$endif$
-$if(beamer)$
-\begin{frame}[allowframebreaks]{$biblio-title$}
-  \bibliographytrue
-$endif$
-  \bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
-$if(beamer)$
-\end{frame}
-$endif$
-
-$endif$
-$endif$
-$if(biblatex)$
-$if(beamer)$
-\begin{frame}[allowframebreaks]{$biblio-title$}
-  \bibliographytrue
-  \printbibliography[heading=none]
-\end{frame}
-$else$
-\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
-$endif$
-
-$endif$
-
-$for(include-after)$
-$include-after$
-
-$endfor$
 \end{document}
+
+%% Epilogue in isc_common_epilogue.tex
