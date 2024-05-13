@@ -1,6 +1,7 @@
 ---
-title: "205.1 FunProg - Assignment 1"
-subtitle: "v1.0.00 - Dr P.-A. Mudry"
+title: "Assignment 1 -- Introduction"
+author: "Dr P.-A. Mudry"
+version: "v1.0.00"
 course: "205.1 Functional Programming"
 toc-title: "Table of contents"
 summary: 

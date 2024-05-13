@@ -1,1 +1,1 @@
-filewatcher *.md 'echo "Building everytime the file changes..." ; ./build_html.sh'
+filewatcher -I --interval 2 *.md 'echo "Building everytime the file changes..." ; ./build_html.sh'
