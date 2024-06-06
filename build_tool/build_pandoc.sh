@@ -8,8 +8,11 @@ TEMPLATE="isc_lab.tex"
 # Process the input options. Add options as needed.        #
 ############################################################
 # Get the options
-while getopts ":ntho:" option; do
+while getopts ":i:n:t:h:o:" option; do
    case $option in
+      i) # Input file
+         input="$OPTARG"         
+         ;;
       n) # Working directory
          DIR="$OPTARG"
          ;;
@@ -30,8 +33,10 @@ while getopts ":ntho:" option; do
    esac
 done
 
-file=("$DIR"/*.md)
-input=${file[0]}
+if ([ -z "$input" ]); then
+   file=("$DIR"/*.md)
+   input=${file[0]}       
+fi
 
 if [ -z "$input" ]; then
     echo "No .md file found in $DIR"
