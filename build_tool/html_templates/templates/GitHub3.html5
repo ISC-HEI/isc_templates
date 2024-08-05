@@ -142,6 +142,7 @@ $endfor$
 $-------------------------------------------------------------------------------
 </head>
 <body>
+<embed src="/samples/samples_lab_hmtl/figs/ISC Logo inline v2-128px.png" style="width:25%"/>
 <article class="markdown-body" style="width:70%">
 $---------------------------------------------------------------> include-before
 $for(include-before)$
