@@ -234,7 +234,7 @@ $if(toc)$
   $endif$
 </div>
 <div class="bckTT">
-<a style="border: 1px solid;border-radius:15px;padding-left: 10px;padding-right: 10px;"href="#top";>Retourner en haut<a>
+<a style="border: 1px solid;border-radius:15px;padding:5px;padding-left: 10px;padding-right: 10px;"href="#top";>Retourner en haut<a>
 </div>
 </html>
 </body>
