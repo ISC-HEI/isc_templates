@@ -205,14 +205,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
   <![endif]-->
 <script type="text/javascript">
 var visible=false
+const titles=document.getElementsByTagName("h1")
+const toc=document.getElementsByTagName("nav")
 function fireScroll(){
+  fancyTOC()
   if(window.scrollY>250){
     apparate()
   }else{
     hide()
   }
 }
-
+function fancyTOC(){
+    if(toc.length==0){
+      return
+    }
+    //console.log(toc[0].childNodes[3].childNodes)
+    //console.log(titles[0].getBoundingClientRect())
+    var active=-1
+    for(var i=1;i<titles.length-1;i++){
+      //console.log(titles[i])
+      //console.log(titles[i].getBoundingClientRect())
+      if(titles[i].getBoundingClientRect().y<=1){
+        active=i-1
+      }else if(i==1){
+        active=-1
+      }
+    }
+    for(var i= 1;i<toc[0].childNodes[3].childNodes.length;i+=2){
+        if(active*2+1==i){
+            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.borderLeft = "thick solid #d2d2d5";
+            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.paddingLeft = "10px";
+            if(toc[0].childNodes[3].childNodes[i].childNodes.length>1){
+              for(var j = 1;j<toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes.length-1;j+=2){
+                  toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.visibility="visible"
+                  toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.display="grid"
+              }
+            } 
+        }else{
+            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.borderLeft = "none";
+            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.paddingLeft = "10px";
+            if(toc[0].childNodes[3].childNodes[i].childNodes.length>1){
+              for(var j = 1;j<toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes.length;j+=2){
+                  toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.visibility="hidden"
+                  toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.display="none"
+              }
+            }
+        }
+    }
+}
+    
 function apparate(){
   if(!visible){
     visible=true
@@ -385,10 +426,87 @@ if you need to!</p></li>
 <li><p>[<em>Optional</em>] Implement the cubic root using the same
 approach and check your results.</p></li>
 </ol>
+<h1 id="exercise-2-getting-our-hands-dirty-difficulty-1">Exercise 2 –
+Getting our hands dirty (difficulty <span class="emoji" data-emoji="star">⭐</span>)</h1>
+<div class="Warning">
+<p><strong>How to be efficient in the series</strong> — There is always
+a method to find a solution on the Internet, using ChatGPT or looking at
+the solution. However, you <strong>NEED</strong> to work by yourself and
+find your own path to the knowledge. This is the way.</p>
+</div>
+<p>You are now asked to write a function to compute the square root of a
+number. Its prototype should be as follows:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scala"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">sqrt</span><span class="op">(</span>x<span class="op">:</span> <span class="ex">Double</span><span class="op">)</span> <span class="op">:</span> <span class="ex">Double</span></span></code></pre></div>
+<h2 id="task-1-newtons-method-1">Task 1 – Newton’s method</h2>
+<p>A typical numerical method to compute the zeroes (or roots) of a
+function is the Newton’s method. Given a function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+and its derivative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>′</mi></mrow><annotation encoding="application/x-tex">f&#39;</annotation></semantics></math>,
+we begin with a guess
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mn>0</mn></msub><annotation encoding="application/x-tex">x_0</annotation></semantics></math>
+for the root. A better approximation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mn>1</mn></msub><annotation encoding="application/x-tex">x_1</annotation></semantics></math>
+of the root is then given by :</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>=</mo><msub><mi>x</mi><mn>0</mn></msub><mo>−</mo><mfrac><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>f</mi><mi>′</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">x_1 = x_0 - \frac{f(x_0)}{f&#39;(x_0)}</annotation></semantics></math></p>
+<p>The process is then repeated with the recursion equation:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>x</mi><mi>n</mi></msub><mo>−</mo><mfrac><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>f</mi><mi>′</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}</annotation></semantics></math></p>
+<p>and stopped when the residual
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϵ</mi><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math>
+is small enough.</p>
+<h2 id="task-2-application-to-the-square-root-function-1">Task 2 –
+Application to the square root function</h2>
+<p>Let’s say one wishes to compute<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>612</mn></msqrt><annotation encoding="application/x-tex">\sqrt{612}</annotation></semantics></math>.
+This is equivalent to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>=</mo><mn>612</mn></mrow><annotation encoding="application/x-tex">x^2 = 612</annotation></semantics></math>.
+The function to use in Newton’s method is then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mn>612</mn></mrow><annotation encoding="application/x-tex">f(x) = x^2 - 612</annotation></semantics></math>.
+Its derivative is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>′</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">f&#39;(x) = 2x</annotation></semantics></math>.
+With an initial approximation of 10 (you can choose what you want here),
+the steps are then :</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>x</mi><mn>0</mn></msub><mo>−</mo><mfrac><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>f</mi><mi>′</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mn>10</mn><mo>−</mo><mfrac><mrow><msup><mn>10</mn><mn>2</mn></msup><mo>−</mo><mn>612</mn></mrow><mrow><mn>2</mn><mo>⋅</mo><mn>10</mn></mrow></mfrac><mo>=</mo><mn>35.6</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>x</mi><mn>2</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><mo>−</mo><mfrac><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>f</mi><mi>′</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mo>=</mo><mn>35.6</mn><mo>−</mo><mfrac><mrow><msup><mn>35.6</mn><mn>2</mn></msup><mo>−</mo><mn>612</mn></mrow><mrow><mn>2</mn><mo>⋅</mo><mn>35.6</mn></mrow></mfrac><mo>=</mo><mn>26.3955</mn><mi>…</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>x</mi><mn>5</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mn>24.73863375</mn><mi>…</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+x_1 &amp;= x_0 - \frac{f(x_0)}{f&#39;(x_0)} = 10 - \frac{10^2 - 612}{2\cdot10} = 35.6\\
+x_2 &amp;= x_1 - \frac{f(x_1)}{f&#39;(x_1)} = 35.6 - \frac{35.6^2 - 612}{2 \cdot 35.6} = 26.3955\ldots\\
+\vdots\\
+x_5 &amp;= 24.73863375\ldots
+\end{aligned}
+</annotation></semantics></math></p>
+<h2 id="task-3-implementation-1">Task 3 – Implementation</h2>
+<p>As you can see, with only five steps the solution is already accurate
+to more than five decimal places (all the decimals written are correct).
+With the help of recursion, you now have to implement this method for
+computing square roots.</p>
+<ol type="1">
+<li><p>Create a new worksheet in <em>IntelliJ</em> to write your code
+for this assignment.</p></li>
+<li><p>Define a function <code>isGoodEnough</code> that determines if
+your solution is good enough. You solution can be considered good enough
+for example when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mo>&lt;</mo><mn>0.0001</mn></mrow><annotation encoding="application/x-tex">\epsilon &lt; 0.0001</annotation></semantics></math>.
+To compute the value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϵ</mi><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math>
+you can simply consider the error made by your function in the
+approximation. For this part, you need to compute an absolute value
+function.</p></li>
+<li><p>Define another function, called <code>improve</code>, to compute
+the value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">x_{n+1}</annotation></semantics></math>,
+given the current approximated value and the value of x.</p></li>
+<li><p>Using the previously defined functions, define the
+<code>sqrt</code> method. Please note that you can add other functions
+if you need to!</p></li>
+<li><p>Test your method and check your results.</p></li>
+<li><p>[<em>Optional</em>] Implement the cubic root using the same
+approach and check your results.</p></li>
+</ol>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1"><p>Example from <a href="http://en.wikipedia.org/wiki/Newton&#39;s_method" class="uri">http://en.wikipedia.org/wiki/Newton&#39;s_method</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Example from <a href="http://en.wikipedia.org/wiki/Newton&#39;s_method" class="uri">http://en.wikipedia.org/wiki/Newton&#39;s_method</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 </article>
@@ -407,6 +525,14 @@ approach and check your results.</p></li>
     <li><a href="#task-2-application-to-the-square-root-function" id="toc-task-2-application-to-the-square-root-function">Task 2 –
     Application to the square root function</a></li>
     <li><a href="#task-3-implementation" id="toc-task-3-implementation">Task 3 – Implementation</a></li>
+    </ul></li>
+    <li><a href="#exercise-2-getting-our-hands-dirty-difficulty-1" id="toc-exercise-2-getting-our-hands-dirty-difficulty-1">Exercise 2
+    – Getting our hands dirty (difficulty <span class="emoji" data-emoji="star">⭐</span>)</a>
+    <ul>
+    <li><a href="#task-1-newtons-method-1" id="toc-task-1-newtons-method-1">Task 1 – Newton’s method</a></li>
+    <li><a href="#task-2-application-to-the-square-root-function-1" id="toc-task-2-application-to-the-square-root-function-1">Task 2 –
+    Application to the square root function</a></li>
+    <li><a href="#task-3-implementation-1" id="toc-task-3-implementation-1">Task 3 – Implementation</a></li>
     </ul></li>
     </ul>
   </nav>

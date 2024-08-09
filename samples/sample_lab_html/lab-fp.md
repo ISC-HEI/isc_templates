@@ -94,3 +94,55 @@ As you can see, with only five steps the solution is already accurate to more th
 1. Test your method and check your results.
 
 1. [_Optional_] Implement the cubic root using the same approach and check your results.
+
+# Exercise 2 -- Getting our hands dirty (difficulty :star:) 
+
+::::: Warning :::::::::::::::::::::::::::::::::::::::::
+**How to be efficient in the series** --- There is always a method to find a solution on the Internet, using ChatGPT or looking at the solution. However, you **NEED** to work by yourself and find your own path to the knowledge. This is the way.
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+You are now asked to write a function to compute the square root of a number\footnote{This exercise is originally from the SICP}. Its prototype should be as follows:
+
+```scala
+def sqrt(x: Double) : Double
+```
+
+## Task 1 -- Newton's method
+A typical numerical method to compute the zeroes (or roots) of a function is the Newton's method. Given a function $f$ and its derivative $f'$, we begin with a guess $x_0$ for the root. A better approximation $x_1$ of the root is then given by :
+
+$$x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}$$
+
+The process is then repeated with the recursion equation:
+
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+
+and stopped when the residual $\epsilon$ is small enough.
+
+## Task 2 -- Application to the square root function
+
+Let's say one wishes to compute^[Example from <http://en.wikipedia.org/wiki/Newton's_method>] $\sqrt{612}$. This is equivalent to $x^2 = 612$. The function to use in Newton's method is then $f(x) = x^2 - 612$. Its derivative is $f'(x) = 2x$. With an initial approximation of 10 (you can choose what you want here), the steps are then :
+
+$$
+\begin{aligned}
+x_1 &= x_0 - \frac{f(x_0)}{f'(x_0)} = 10 - \frac{10^2 - 612}{2\cdot10} = 35.6\\
+x_2 &= x_1 - \frac{f(x_1)}{f'(x_1)} = 35.6 - \frac{35.6^2 - 612}{2 \cdot 35.6} = 26.3955\ldots\\
+\vdots\\
+x_5 &= 24.73863375\ldots
+\end{aligned}
+$$
+
+
+## Task 3 -- Implementation
+As you can see, with only five steps the solution is already accurate to more than five decimal places (all the decimals written are correct). With the help of recursion, you now have to implement this method for computing square roots.
+
+1. Create a new worksheet in _IntelliJ_ to write your code for this assignment.
+
+1. Define a function `isGoodEnough` that determines if your solution is good enough. You solution can be considered good enough for example when $\epsilon < 0.0001$. To compute the value of $\epsilon$ you can simply consider the error made by your function in the approximation. For this part, you need to compute an absolute value function.
+
+1. Define another function, called `improve`, to compute the value of $x_{n+1}$, given the current approximated value and the value of x.
+
+1. Using the previously defined functions, define the `sqrt` method. Please note that you can add other functions if you need to!
+
+1. Test your method and check your results.
+
+1. [_Optional_] Implement the cubic root using the same approach and check your results.
