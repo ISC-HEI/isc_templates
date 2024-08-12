@@ -133,7 +133,10 @@ $-- by the CSS file in the finalized template:
   ul li {
     margin-top:5px;
   }
-  
+  ul li ul li {
+    visibility:hidden;
+    display:none;
+  }
   #title1{
   width:75%;
   }
@@ -199,6 +202,8 @@ $-------------------------------------------------------------------------------
 var visible=false
 const titles=document.getElementsByTagName("h1")
 const toc=document.getElementsByTagName("nav")
+
+//function called when scrolling, used for updating back to top button and TOC 
 function fireScroll(){
   fancyTOC()
   if(window.scrollY>250){
@@ -207,13 +212,18 @@ function fireScroll(){
     hide()
   }
 }
+//function used to change the TOC dynamically depending on on page position
+//if removed, the TOC will just be static
 function fancyTOC(){
     if(toc.length==0){
       return
     }
     //console.log(toc[0].childNodes[3].childNodes)
     //console.log(titles[0].getBoundingClientRect())
+    // -1 correspond to first title
     var active=-1
+    //The last title to have pased a certain position (1 pixel from 
+    //the top here) is considered as the "active" title
     for(var i=1;i<titles.length-1;i++){
       //console.log(titles[i])
       //console.log(titles[i].getBoundingClientRect())
@@ -223,10 +233,15 @@ function fancyTOC(){
         active=-1
       }
     }
+    //iterate over all link titles in the TOC as well as their sub elements to change them
+    //according to the "active" title. Html collections contains "ghost elements" not present
+    //in the page html wich must be jumped over, hence the weird active detection  
     for(var i= 1;i<toc[0].childNodes[3].childNodes.length;i+=2){
         if(active*2+1==i){
+            //borders of the active part
             toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.borderLeft = "thick solid #d2d2d5";
             toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.paddingLeft = "10px";
+            //activation of the sub links if present
             if(toc[0].childNodes[3].childNodes[i].childNodes.length>1){
               for(var j = 1;j<toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes.length-1;j+=2){
                   toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.visibility="visible"
@@ -234,6 +249,7 @@ function fancyTOC(){
               }
             } 
         }else{
+            //must change things back as we don't use css events
             toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.borderLeft = "none";
             toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.paddingLeft = "10px";
             if(toc[0].childNodes[3].childNodes[i].childNodes.length>1){
@@ -245,7 +261,9 @@ function fancyTOC(){
         }
     }
 }
-    
+//make the back to top button appear
+//must check if already visible to prevent unwanted
+//operation as it is tied to scrolling
 function apparate(){
   if(!visible){
     visible=true
@@ -255,16 +273,19 @@ function apparate(){
     moveUp(-40,bckTTButton)
     
   }
-    
-}
-function moveUp(pos,btn){
-  btn.style.bottom=pos+"px";
-  if(pos<=40){
-    setTimeout(moveUp,5,pos+2,btn)
+  //move the button position by a fixed amount every 5ms using a timeout
+  //using a loop would block the code
+  function moveUp(pos,btn){
+    btn.style.bottom=pos+"px";
+    if(pos<=40){
+      setTimeout(moveUp,5,pos+2,btn)
+    }
   }
-  
 }
 
+//make the back to top button disappear
+//must check if already visible to prevent unwanted
+//operation as it is tied to scrolling
 function hide(){
   if(visible){
     visible=false
@@ -272,19 +293,21 @@ function hide(){
     //bckTTButton.style.bottom="40px";
     moveDown(40,bckTTButton)
   }
-function moveDown(pos,btn){
-  btn.style.bottom=pos+"px";
-  if(pos>=-40){
-    setTimeout(moveDown,5,pos-2,btn)
-  }else{
-    btn.style.visibility="hidden";
+
+  //move the button position by a fixed amount every 5ms using a timeout
+  //using a loop would block the code
+  function moveDown(pos,btn){
+    btn.style.bottom=pos+"px";
+    if(pos>=-40){
+      setTimeout(moveDown,5,pos-2,btn)
+    }else{
+      btn.style.visibility="hidden";
+    }
   }
-  
-}
 }
 </script> 
 </head>
-<body onscroll="fireScroll()">
+<body onscroll="fireScroll()" onload="fireScroll()">
 <article class="markdown-body" style="width:70%">
 $---------------------------------------------------------------> include-before
 $for(include-before)$
