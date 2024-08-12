@@ -203,6 +203,23 @@ var visible=false
 const titles=document.getElementsByTagName("h1")
 const toc=document.getElementsByTagName("nav")
 
+//used to setup the page when loaded
+function pageLoad(){
+  if(toc.length!=0){
+    //put the TOC sections' title in a div
+    for(var i=1;i<toc[0].childNodes[3].childNodes.length;i+=2){
+      const data=toc[0].childNodes[3].childNodes[i].childNodes[0].cloneNode(true)
+      var dv=document.createElement("div")
+      toc[0].childNodes[3].childNodes[i].childNodes[0].replaceWith(dv)
+      toc[0].childNodes[3].childNodes[i].childNodes[0].appendChild(data)
+    }
+    
+  }
+  //add on scroll event after load function to prevent mishaps
+  document.getElementsByTagName("body")[0].onscroll=function(){fireScroll()}
+  fireScroll()
+}
+
 //function called when scrolling, used for updating back to top button and TOC 
 function fireScroll(){
   fancyTOC()
@@ -239,19 +256,36 @@ function fancyTOC(){
     for(var i= 1;i<toc[0].childNodes[3].childNodes.length;i+=2){
         if(active*2+1==i){
             //borders of the active part
-            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.borderLeft = "thick solid #d2d2d5";
-            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.paddingLeft = "10px";
+            toc[0].childNodes[3].childNodes[i].childNodes[0].style.borderLeft = "thick solid #d2d2d5";
+            toc[0].childNodes[3].childNodes[i].childNodes[0].style.paddingLeft = "10px";
             //activation of the sub links if present
             if(toc[0].childNodes[3].childNodes[i].childNodes.length>1){
+              //search if a subtitle is active by using the href from the TOC to find the actual element,
+              //then check the element distance from the top
+              var act=-1
+              for(var j = 1;j<toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes.length-1;j+=2){
+                const subTitle=document.getElementById(toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].childNodes[0].getAttribute("href").slice(1))
+                  if(subTitle.getBoundingClientRect().y<=1){
+                    act=j
+                  }
+              }
+              //make the components appear and add the side bar to the correct one, hide it on the others
               for(var j = 1;j<toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes.length-1;j+=2){
                   toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.visibility="visible"
                   toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.display="grid"
+                  if(j==act){
+                    toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.borderLeft = "thick solid #d2d2d5"
+                    toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.paddingLeft = "10px"
+                  }else{
+                    toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.borderLeft = "none"
+                    toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.paddingLeft = "0px"
+                  }
               }
             } 
         }else{
             //must change things back as we don't use css events
-            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.borderLeft = "none";
-            toc[0].childNodes[3].childNodes[i]./*childNodes[0].*/style.paddingLeft = "10px";
+            toc[0].childNodes[3].childNodes[i].childNodes[0].style.borderLeft = "none";
+            toc[0].childNodes[3].childNodes[i].childNodes[0].style.paddingLeft = "0px";
             if(toc[0].childNodes[3].childNodes[i].childNodes.length>1){
               for(var j = 1;j<toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes.length;j+=2){
                   toc[0].childNodes[3].childNodes[i].childNodes[2].childNodes[j].style.visibility="hidden"
@@ -307,7 +341,7 @@ function hide(){
 }
 </script> 
 </head>
-<body onscroll="fireScroll()" onload="fireScroll()">
+<body  onload="pageLoad()">
 <article class="markdown-body" style="width:70%">
 $---------------------------------------------------------------> include-before
 $for(include-before)$

@@ -95,7 +95,7 @@ As you can see, with only five steps the solution is already accurate to more th
 
 1. [_Optional_] Implement the cubic root using the same approach and check your results.
 
-# Exercise 2 -- Getting our hands dirty (difficulty :star:) 
+# Exercise 3 -- Getting our hands dirty (difficulty :star:) 
 
 ::::: Warning :::::::::::::::::::::::::::::::::::::::::
 **How to be efficient in the series** --- There is always a method to find a solution on the Internet, using ChatGPT or looking at the solution. However, you **NEED** to work by yourself and find your own path to the knowledge. This is the way.
