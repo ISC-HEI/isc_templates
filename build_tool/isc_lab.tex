@@ -601,7 +601,7 @@ $endif$
 
   % At last, here are the correct options with correct straight quotes, numbers that look good
   \usepackage[nomap, lining, medium, scaled=1.1]{FiraMono} 
-  \usepackage{fontawesome}
+  \usepackage{fontawesome5}
 
   %\renewcommand*\familydefault{\ttdefault} %% Only if the base font of the document is to be typewriter style
   %\usepackage{sourcecodepro}
@@ -964,6 +964,69 @@ $if(listings)$
     include,pragma,undef,warning
   }
 }[keywords,comments,strings]
+
+\lstdefinelanguage{sql}{
+  style = framed,
+  keywords={SELECT, FROM, WHERE, AND, OR, IN, LIKE, GROUP, BY,
+            ORDER, HAVING, JOIN, ON, CURRENT_DATE, INTERVAL, DESC, ASC, AS, DISTINCT,
+            INSERT, UPDATE, DELETE, CREATE, TABLE, VIEW, DROP, ALTER, INDEX,
+            CONSTRAINT, PRIMARY, KEY, FOREIGN, REFERENCES, NOT, UNIQUE, INTO,
+            VALUES, EXISTS, SET, LIMIT, FOR, SKIP, LOCKED, COUNT},
+  keywords=[2]{INTEGER, INT, VARCHAR, CHAR, TEXT, BOOLEAN, DATE, TIME, TIMESTAMP,
+              FLOAT, DOUBLE, DECIMAL, BIGINT, SMALLINT, NULL, JSON, JSONB, SERIAL},
+  sensitive=false,
+  comment=[s]{/*}{*/},
+  morecomment=[l]--,
+  morestring=[b]',
+  morestring=[b]"
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  columns=fullflexible,
+  showstringspaces=false,
+  tabsize=2,
+  keepspaces=true,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  keywordstyle=\color{blue}\bfseries,
+  keywordstyle=[2]\color{purple}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{OliveGreen},
+}
+
+
+\lstdefinelanguage{json}{
+    basicstyle=\ttfamily\small,
+    morestring=[b]",
+    stringstyle=\color{red},
+    breaklines=true
+}
+
+
+\definecolor{xmltag}{RGB}{59,120,155}  % Muted blue
+\definecolor{xmlattr}{RGB}{119,85,17}  % Muted brown
+\definecolor{xmlcomment}{RGB}{112,128,144}  % Slate gray
+\definecolor{xmlstring}{RGB}{70,130,100}  % Muted green
+
+\lstdefinelanguage{xml}{
+  style = framed,
+  morestring=[b]",
+  comment=[s]{<!--}{-->},
+  stringstyle=\color{xmlstring},
+  commentstyle=\color{xmlcomment}\itshape,
+  keywordstyle=\color{xmlattr},
+  morekeywords={xmlns,version,encoding},
+  identifierstyle=\color{black},
+  showstringspaces=false,
+  breaklines=true,
+  literate=
+    *{<}{{{\color{xmltag}<}}}1
+    {>}{{{\color{xmltag}>}}}1
+    {/}{{{\color{xmltag}/}}}1
+    {=}{{{\color{xmltag}=}}}1,
+}
+
 
 % Let mdframed do the frame (to remove the border that goes too far)
 \newcommand*\continuingfont{\scriptsize\itshape}
