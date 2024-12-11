@@ -15,7 +15,7 @@ Help()
    echo "options:"
    echo "h     Print this help."
    echo "n     Name of the file to compile."   
-   echo "o     Destination of the PDF file (default same as input file name)."
+   echo "o     Destination directory of the PDF file (default, here)."
    echo "m     Math engine used. Options are mathjax, mathml, katex (default), webtex."
    echo "t     Disable table of contents generation in the HTML output."
    echo
