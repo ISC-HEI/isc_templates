@@ -25,7 +25,7 @@ Help()
 # Process the input options. Add options as needed.        #
 ############################################################
 # Get the options
-while getopts ":m:o:t:h:n:" option; do
+while getopts ":m:o:n:th" option; do
    case ${option} in
       n ) # Enter a file name
          DIR="$OPTARG"
@@ -41,7 +41,7 @@ while getopts ":m:o:t:h:n:" option; do
       t ) # Disable toc generation
          TOC=false         
          ;;
-      o ) # Destination of PDF file        
+      o ) # Destination directory of PDF file        
          DEST_PDF="$OPTARG"
          ;;
       \? ) # Invalid option
@@ -76,7 +76,7 @@ else
     pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="GitHub3.html5" --embed-resources --standalone 
 fi
 
-if [ -n "$DEST_PDF" ]; then    
+if [ -n "$DEST_PDF" ]; then
    echo "Output generated in ${output} and copied to directory ${DEST_PDF}"   
    mv "${output}" "${DEST_PDF}"
 else 
