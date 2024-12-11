@@ -1,25 +1,45 @@
 #!/bin/bash
-VERSION="1.0.6"
+VERSION="1.0.7"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 DIR="."
 MATH_ENGINE="katex"
+TOC=true
+
+Help()
+{
+   # Display Help
+   echo "Generate an HTML file from an MD file, from the ISC toolchain"
+   echo "Version $VERSION, Pierre-André Mudry, 2024"
+   echo
+   echo "Syntax: build_html.sh [-n input_file] [-h] [-m math_engine] [-t] [-o output_file]"
+   echo "options:"
+   echo "h     Print this help."
+   echo "n     Name of the file to compile."   
+   echo "o     Destination of the PDF file (default same as input file name)."
+   echo "m     Math engine used. Options are mathjax, mathml, katex (default), webtex."
+   echo "t     Disable table of contents generation in the HTML output."
+   echo
+}
 
 ############################################################
 # Process the input options. Add options as needed.        #
 ############################################################
 # Get the options
-while getopts ":m:o:h:n:" option; do
+while getopts ":m:o:t:h:n:" option; do
    case ${option} in
       n ) # Enter a file name
          DIR="$OPTARG"
          ;;
       h ) # not yet implemented
-         echo "not yet implemented"
+         Help
          exit 1
          ;;
       m ) # Math engine used
          MATH_ENGINE=$OPTARG
          echo "Using math engine $MATH_ENGINE"
+         ;;         
+      t ) # Disable toc generation
+         TOC=false         
          ;;
       o ) # Destination of PDF file        
          DEST_PDF="$OPTARG"
@@ -49,7 +69,12 @@ pushd "$DIR" || exit
 # --css="$SCRIPT_DIR/html_templates/sakura.css"
 # options for maths is mathjax, mathml, katex, webtex
 # mathml is fast but ugly. katex is fine
-pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="GitHub3.html5" --toc --toc-depth=2 --embed-resources --standalone 
+
+if $TOC; then
+    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="GitHub3.html5" --toc --toc-depth=2 --embed-resources --standalone 
+else
+    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="GitHub3.html5" --embed-resources --standalone 
+fi
 
 if [ -n "$DEST_PDF" ]; then    
    echo "Output generated in ${output} and copied to directory ${DEST_PDF}"   
