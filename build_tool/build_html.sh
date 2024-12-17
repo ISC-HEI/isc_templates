@@ -4,6 +4,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 DIR="."
 MATH_ENGINE="katex"
 TOC=true
+TEMPLATE="GitHub3.html5"
 
 Help()
 {
@@ -25,10 +26,14 @@ Help()
 # Process the input options. Add options as needed.        #
 ############################################################
 # Get the options
-while getopts ":m:o:n:th" option; do
+while getopts ":x:m:o:n:th" option; do
    case ${option} in
+      x ) 
+         TEMPLATE="$OPTARG"
+         echo "Using template $TEMPLATE"
+         ;; 
       n ) # Enter a file name
-         DIR="$OPTARG"
+         DIR="$OPTARG" 
          ;;
       h ) # not yet implemented
          Help
@@ -71,9 +76,9 @@ pushd "$DIR" || exit
 # mathml is fast but ugly. katex is fine
 
 if $TOC; then
-    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="GitHub3.html5" --toc --toc-depth=2 --embed-resources --standalone 
+    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="${TEMPLATE}" --toc --toc-depth=2 --embed-resources --standalone --strip-comments
 else
-    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="GitHub3.html5" --embed-resources --standalone 
+    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="${TEMPLATE}" --embed-resources --standalone --strip-comments
 fi
 
 if [ -n "$DEST_PDF" ]; then
