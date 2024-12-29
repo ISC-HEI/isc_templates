@@ -1,16 +1,17 @@
 ---
 title: "Labo 3 -- Test et boucles"
 author: [Dr Pierre-André Mudry, Marc Pignat]
-date: "1.7.2023"
-version: "1.1.0"
+date: "28.1.2024"
+version: "1.2.0"
 
 module: "101"
 ue: "101.1"
 course: "Programmation impérative"
 
-# LaTex specific
+# LaTex and Typst
 fontsize: 10pt
 caption-justification: centering
+lang: fr
 ---
 
 <!--
