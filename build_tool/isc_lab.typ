@@ -131,8 +131,8 @@
   show figure.caption: set text(size: 9pt)
 
   // Code snippets:
-  show raw: set block(inset: (left: 2em, top: 0.5em, right: 1em, bottom: 0.5em ))
-  show raw: set text(fill: rgb("#116611"), size: 9pt) //green
+  // show raw: set block(inset: (left: 2em, top: 0.5em, right: 1em, bottom: 0.5em ))
+  // show raw: set text(fill: rgb("#116611"), size: 9pt) //green
 
   // Footnote formatting
   set footnote.entry(indent: 0.5em)
@@ -142,6 +142,29 @@
   // Lists
   set list(indent: 10pt)//, marker:([•], [‣], [–]))
   set enum(indent: 10pt)
+
+  // Code blocks configuration
+  set raw(theme: "figs_template/GitHub.tmTheme")
+  import "@preview/codly:1.1.0": *
+  import "@preview/codly-languages:0.1.3": *
+  show: codly-init.with()
+  codly(
+    languages: codly-languages,
+    smart-indent: true,
+    zebra-fill: none,
+    display-icon: false,
+    display-name: false,
+    number-align: right+top,
+    stroke: .5pt + luma(70),
+    radius: 0.5em,
+    inset: (x: .5em, y: 0.2em),
+    lang-outset: (x: -3pt, y: 5pt),
+    fill: luma(97%),
+  )
+
+  codly(number-format: (n) => box(fill: luma(97%), height: 1em, baseline:5pt, outset: .1em)[#text(luma(140), baseline: .3em, size: .8em)[#str(n)]])
+  
+  codly-enable()
 
   // Headings configuration
   show heading: set text(hyphenate: false)
