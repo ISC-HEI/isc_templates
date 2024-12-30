@@ -36,6 +36,7 @@
   sectionnumbering: none,
   doc,
 ) = {
+
   let body-font = ("Source Sans 3", "Libertinus Serif")
   let sans-font = ("Source Sans 3")
   let raw-font = "Fira Code"
@@ -65,7 +66,8 @@
   //  Basic pagination and typesetting
   /////////////////////////////////////////////////
   set page(
-    margin: (inside: 2cm, outside: 1.5cm, y: 2.1cm), // Binding inside
+    // margin: (inside: 2cm, outside: 1.5cm, y: 2.1cm), // Binding inside
+    margin: (left: 1.8cm, right: 1.5cm, top: 2.5cm, bottom: 2.4cm), // Binding inside
     paper: "a4",
   )
 
@@ -80,6 +82,25 @@
     authors-str = authors.at(0)
   }
 
+  let content-to-string(content) = {
+    if content.has("text") {
+      content.text
+    } else if content.has("children") {
+      content.children.map(content-to-string).join("")
+    } else if content.has("body") {
+      content-to-string(content.body)
+    } else if content == [ ] {
+      " "
+    }
+  }
+
+  // Set PDF properties
+  set document(
+    title: [$title$],
+    author: content-to-string(authors-str),
+    keywords: ("$ue$", "$course$", "ISC", "HEI", "Sion"),
+  )
+
   // Header and footer formatting
   let header-content = text(0.87em)[
     #text(title)
@@ -87,7 +108,7 @@
     #date, v#text(version)
   ]
 
-  let footer-content = context text(0.87em)[
+  let footer-content = context text(0.8em)[
     #text(authors-str) | #emph(ue) #emph(course)
     #h(1fr)
     #counter(page).display("1 | 1", both: true)
@@ -100,7 +121,7 @@
       #header-content
       #move(dy: -7pt, line(length: 100%, stroke: 0.5pt))
     ],
-    header-ascent: 40%,
+    header-ascent: 20%,
     // For pages other than the first one
     footer: context if counter(page).get().first() >= 1 [
       #move(dy: 5pt, line(length: 100%, stroke: 0.5pt))
@@ -135,20 +156,23 @@
   show image: it => { align(center, it) }
 
   // Figure numbering with whole numbers, in bold and with a nice separator
-  set figure(numbering: "1", gap: 0.8em, supplement: "Figure")
-  show figure.caption: c => [
-    #text(fill: black, weight: "bold")[
-     #c.supplement #c.counter.display(c.numbering)
-    ]
-    #c.separator#c.body
-  ]
+  set figure(numbering: "1", gap: 0.8em, supplement: text("Figure", weight: "bold"))
 
+  // Make the caption like I like them
+  show figure.caption: it => context {
+      if it.numbering == none {
+        it.body
+      } else {
+        text(fill:black, weight: "bold")[#it.supplement #it.counter.display()] + " " + it.separator + it.body
+      }
+    }
   show figure.caption: set text(size: 10pt, fill: luma(40%)) // Caption text
   set figure.caption(separator: "-") // With a nice separator
 
   // Code snippets:
   // show raw: set block(inset: (left: 2em, top: 0.5em, right: 1em, bottom: 0.5em ))
-  show raw: set text(fill: rgb("#6b194a"), size: 9pt) //green
+  // Set raw text color to something light but nice
+  show raw: set text(fill: rgb("#6b194a"), size: 9pt)
 
   // Footnote formatting
   set footnote.entry(indent: 0.5em)
