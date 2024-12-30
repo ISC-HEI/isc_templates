@@ -9,6 +9,7 @@
 //     -o mylab.pdf
 
 // TODO: 
+// - Footnotes not tested yet
 // - Figure number not included for typst (comme sur la figure 3)
 // - Equation not displayed similarly to LaTex --> almost fixed, have to increase space between equations
 // - How are \newpage handled?
@@ -20,11 +21,7 @@
   #v(1pt)
 ]
 
-/**
- * PROLOGUE
- **/
-
-// SET BASIC TEMPLATE DEFAULTS:
+// Template defaults
 #let conf(
   title: none,
   subtitle: none,
@@ -46,7 +43,7 @@
   let body-font = ("Source Sans 3", "Libertinus Serif")
   let sans-font = ("Source Sans 3")
   let raw-font = "Fira Code"
-  let math-font = ("Asana Math", "Fira Math")
+  let math-font = ("New Computer Modern Math", "Asana Math", "Fira Math")
 
   show terms: it => {
     it.children
@@ -64,7 +61,9 @@
   set text(font: body-font, size: fontsize, alternates: false, lang: internal-language)
 
   // Set other fonts
-  // show math.equation: set text(font: math-font) // For math equations
+  show math.equation: set text(font: math-font, size:1.1em) // For math equations
+  show math.equation.where(block: true): set par(leading: 1em) // Add space between equations in math mode
+  set math.cases(gap:.8em) // Gap between cases in math mode
   show raw: set text(font: raw-font) // For code
   show heading: set text(font: sans-font) // For sections, sub-sections etc..
 
@@ -136,7 +135,7 @@
   )
 
   // Links coloring
-  show link: set text(ligatures: true, fill: blue)
+  show link: set text(ligatures: true, fill: color.rgb(77,118,187))
 
   // Sections numbers
   // set heading(numbering: "1.1.1 -")
@@ -180,7 +179,7 @@
   // Set raw text color to something light but nice
   show raw: set text(fill: rgb("#6b194a"), size: 9pt)
 
-  // Footnote formatting
+  // Footnotes formatting
   set footnote.entry(indent: 0.5em)
   show footnote.entry: set par(hanging-indent: 1em)
   show footnote.entry: set text(size: 9pt, weight: 200)
@@ -212,7 +211,7 @@
   
   codly-enable()
 
-  // Headings configuration
+  // Headings (corresponds to # ## ###) configuration
   show heading: set text(hyphenate: false)
 
   let line_spacing_around_heading = 0.75em
@@ -234,6 +233,7 @@
         #block(it.body) 
       ])
 
+  // Not used currently but left for reference
   // show heading.where(level: 3
   //   ): it => align(left, block(above: 18pt, below: 11pt)[
   //       #set text(font: "Times New Roman", weight: "regular", style: "italic", size: 11pt)
@@ -379,4 +379,4 @@ $for(include-after)$
 $include-after$
 $endfor$
 
-// The end
+// This is the end

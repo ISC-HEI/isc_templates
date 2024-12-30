@@ -77,9 +77,9 @@ La classe `FunGraphics` se charge de vous fournir une surface graphique sur laqu
 val display: FunGraphics = FunGraphics(width, height)
 ```
 
-La librairie graphique permet contient plusieurs méthodes de dessin différentes mais nous allons commencer simplement à l'aide de la méthode `display.setPixel(x:Int, y:Int)` qui fait apparaître un point à la position (x, y). Attention, la position (0,0) se trouve en haut à gauche de l'écran comme indiqué sur la figure \ref{fig_coords}.
+La librairie graphique permet contient plusieurs méthodes de dessin différentes mais nous allons commencer simplement à l'aide de la méthode `display.setPixel(x:Int, y:Int)` qui fait apparaître un point à la position (x, y). Attention, la position (0,0) se trouve en haut à gauche de l'écran comme indiqué sur la figure -@fig:fig_coords.
 
-![Coordonnées dans la fenêtre graphique\label{fig_coords}](figs/dessin_ecran.png){height=5cm}
+![Coordonnées dans la fenêtre graphique](figs/dessin_ecran.png){height=5cm, #fig:fig_coords}
 
 > Lorsque vous ajoutez une variable de type `FunGraphics`, _IntelliJ_ va rajouter automatiquement la ligne `import hevs.graphics.FunGraphics`, qui indique que nous utilisons quelque chose  provenant d'un autre ficher.
 
@@ -112,7 +112,7 @@ Nous allons maintenant travailler un peu avec de la couleur. Pour ce faire, rajo
 
 1. Faites une nouvelle classe avec une interface graphique.
 1. La fenêtre graphique créée doit faire 256 pixels par 256 pixels.
-1. Le but de cet exercice est de dessiner une palette d'un dégradé de couleurs bleu et rouge, comme sur la figure \ref{fig_color}. Pour ce faire, il faut utiliser une première boucle pour faire le dégradé horizontal de rouge et une seconde, imbriquée dans la première, pour faire le dégradé vertical.
+1. Le but de cet exercice est de dessiner une palette d'un dégradé de couleurs bleu et rouge, comme sur la figure -@fig:fig_color. Pour ce faire, il faut utiliser une première boucle pour faire le dégradé horizontal de rouge et une seconde, imbriquée dans la première, pour faire le dégradé vertical.
 1. Si un pixel est à la position [x,y], on va le peindre avec une valeur de bleu de `y` et une valeur de rouge de `x`. La valeur verte du pixel restant toujours à zéro.
 1. Pour peindre le pixel en position [x,y] d'une certaine couleur, on utilise ainsi:
 
@@ -122,7 +122,7 @@ Nous allons maintenant travailler un peu avec de la couleur. Pour ce faire, rajo
 
     > Dans une couleur dans ce modèle, on décrit la couleur finale en fonction des composantes RED, GREEN et BLUE. Dans notre cas, ce sont des valeurs entières entre 0 et 255. La valeur 0 signifie qu'une composante de la couleur est absente, tandis que 255 signifie que la couleur est à son intensité maximale. On peut en mélangeant ces couleurs de bases réaliser toutes sortes de couleurs. 
 
-    ![Dessin du dégradé de couleurs \label{fig_color}](figs/colors.png){height=5.0cm}
+    ![Dessin du dégradé de couleurs](figs/colors.png){height=5.0cm, #fig:fig_color}
 1. Combien de couleurs **différentes** peut-on obtenir avec le système décrit ci-dessus ?
 
 ## Tâche 6 -- Dessin d'un disque

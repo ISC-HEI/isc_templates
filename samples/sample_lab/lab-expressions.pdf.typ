@@ -9,8 +9,9 @@
 //     -o mylab.pdf
 
 // TODO: 
+// - Footnotes not tested yet
 // - Figure number not included for typst (comme sur la figure 3)
-// - Equation not displayed similarly to LaTex
+// - Equation not displayed similarly to LaTex --> almost fixed, have to increase space between equations
 // - How are \newpage handled?
 // - How to edit metadata such as creator ? It seems not feasible at the moment but pdf-meta can be used
 
@@ -20,11 +21,7 @@
   #v(1pt)
 ]
 
-/**
- * PROLOGUE
- **/
-
-// SET BASIC TEMPLATE DEFAULTS:
+// Template defaults
 #let conf(
   title: none,
   subtitle: none,
@@ -46,7 +43,7 @@
   let body-font = ("Source Sans 3", "Libertinus Serif")
   let sans-font = ("Source Sans 3")
   let raw-font = "Fira Code"
-  let math-font = ("Asana Math", "Fira Math")
+  let math-font = ("New Computer Modern Math", "Asana Math", "Fira Math")
 
   show terms: it => {
     it.children
@@ -64,7 +61,9 @@
   set text(font: body-font, size: fontsize, alternates: false, lang: internal-language)
 
   // Set other fonts
-  // show math.equation: set text(font: math-font) // For math equations
+  show math.equation: set text(font: math-font, size:1.1em) // For math equations
+  show math.equation.where(block: true): set par(leading: 1em) // Add space between equations in math mode
+  set math.cases(gap:.8em) // Gap between cases in math mode
   show raw: set text(font: raw-font) // For code
   show heading: set text(font: sans-font) // For sections, sub-sections etc..
 
@@ -137,7 +136,7 @@ impérative", "ISC", "HEI", "Sion"),
   )
 
   // Links coloring
-  show link: set text(ligatures: true, fill: blue)
+  show link: set text(ligatures: true, fill: color.rgb(77,118,187))
 
   // Sections numbers
   // set heading(numbering: "1.1.1 -")
@@ -181,7 +180,7 @@ impérative", "ISC", "HEI", "Sion"),
   // Set raw text color to something light but nice
   show raw: set text(fill: rgb("#6b194a"), size: 9pt)
 
-  // Footnote formatting
+  // Footnotes formatting
   set footnote.entry(indent: 0.5em)
   show footnote.entry: set par(hanging-indent: 1em)
   show footnote.entry: set text(size: 9pt, weight: 200)
@@ -213,7 +212,7 @@ impérative", "ISC", "HEI", "Sion"),
   
   codly-enable()
 
-  // Headings configuration
+  // Headings (corresponds to # ## ###) configuration
   show heading: set text(hyphenate: false)
 
   let line_spacing_around_heading = 0.75em
@@ -235,6 +234,7 @@ impérative", "ISC", "HEI", "Sion"),
         #block(it.body) 
       ])
 
+  // Not used currently but left for reference
   // show heading.where(level: 3
   //   ): it => align(left, block(above: 18pt, below: 11pt)[
   //       #set text(font: "Times New Roman", weight: "regular", style: "italic", size: 11pt)
@@ -394,13 +394,14 @@ La librairie graphique permet contient plusieurs méthodes de dessin
 différentes mais nous allons commencer simplement à l'aide de la méthode
 `display.setPixel(x:Int, y:Int)` qui fait apparaître un point à la
 position (x, y). Attention, la position (0,0) se trouve en haut à gauche
-de l'écran comme indiqué sur la figure .
+de l'écran comme indiqué sur la figure asdf\@fig:fig\_coords.
 
-#figure(image("figs/dessin_ecran.png", height: 5cm),
+#figure(image("figs/dessin_ecran.png", height: 5cm,),
   caption: [
-    Coordonnées dans la fenêtre graphique
+    Figure 1: Coordonnées dans la fenêtre graphique
   ]
 )
+<fig:fig_coords>
 
 #quote(block: true)[
 Lorsque vous ajoutez une variable de type `FunGraphics`, #emph[IntelliJ]
@@ -522,13 +523,7 @@ le suivant :
 + Dessinez cette courbe dans laquelle les coordonnées `x` et `y` qui se
   trouvent sur la courbe sont donnés par l'équation paramétrique
   suivante (#emph[a] est une constante) :
-  $ {x (t) = a frac(sin t, 1 + cos^2 t)\
-  y (t) = a frac(sin t cos t, 1 + cos^2 t)\
-   $
-
-$ cases(delim: "{", x & = 3 + 2 sin t, y & = 4 + sin t) $
-
-$ f (n) = cases(delim: "{", n \/ 2 & n upright(" is even"), 3 n + 1 & n upright(" is odd")) $
+  $ cases(delim: "{", x (t) & = a frac(sin t, 1 + cos^2 t), y (t) & = a frac(sin t cos t, 1 + cos^2 t), ) $
 
 + Quel est l'effet de $a$ dans le jeu d'équation ci-dessus ?
 
@@ -539,4 +534,4 @@ $ f (n) = cases(delim: "{", n \/ 2 & n upright(" is even"), 3 n + 1 & n upright(
  * EPILOGUE - After the body
  **/
 
-// The end
+// This is the end

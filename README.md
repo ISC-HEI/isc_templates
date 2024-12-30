@@ -17,7 +17,7 @@ Here you'll find tools for writing :
 - oral exams (not included in this repo, yet)
 
 # Preamble
-Unfortunately, for the moment, two different sets tools of tools are used to build the different types of documents. 
+Unfortunately, for the moment, two different sets tools of tools are used to build the different types of documents. _Update 30.12.2024_ : I am working on this to build everything using `pandoc` and `typst` without relying on LaTex anymore.
 
 Because exams and exercises are based on different categories of questions (MCQs, true/false, long questions, etc.), describing those documents requires a certain amount of granularity for automatic management. This flexibility is achieved with the help of regular LaTex documents along with a set of tools that are used to automatically compute the number of points in an exam for the scale, to produce the solution in the same document, etc.
 
@@ -47,11 +47,14 @@ There are two sample example : one for an exam and a second for a series of exer
 
 ---
 # Toolchain 2 : `pandoc` for converting GFM markdown to PDF and/or HTML, for ISC labs
-This toolchain uses [pandoc](https://pandoc.org/) for writing labs in Markdown (in its `gfm` flavour). 
+This toolchain uses [pandoc](https://pandoc.org/) for writing labs in Markdown (in its `gfm` flavour).
 
-The heavy lifting for converting `markdown` to `pdf` is made using `pandoc` with a LaTex template based [on the Wandmalfarbe](https://github.com/Wandmalfarbe/pandoc-latex-template) solution. The conversion to HTML is made with the same tools and `easy-pandoc-templates` from https://github.com/ryangrose/easy-pandoc-templates which has a nice TOC on the side but I finally chose to use `Github.html5` instead.
+The heavy lifting for converting `markdown` to `pdf` is made using `pandoc` with a LaTex template based [on the Wandmalfarbe](https://github.com/Wandmalfarbe/pandoc-latex-template) solution OR Typst. 
 
-The conversion is rather fast and can be made in batch. The advantage of this solution resides in 
+The conversion to HTML is made with the same tools and `easy-pandoc-templates` from https://github.com/ryangrose/easy-pandoc-templates which has a nice TOC on the side but I finally chose to use `Github.html5` instead.
+
+The conversion is rather fast and can be made in batch. The advantage of this solution resides in:
+
 - writing Markdown is much faster and easier than plain Tex
 - its speed for converting `md` to `pdf`
 - the fact that variables can be defined at the beginning of the `md` module file using YAML. The variables are then passed to Latex and can be used in the template for further processing.
@@ -70,7 +73,7 @@ The toolchain has been tested on Debian based distros (Ubuntu on WSL2, native De
 Quick install (but not minimal):
 
 ```bash
-apt install parallel rename librsvg2-bin
+apt install parallel rename librsvg2-bin 
 apt install texlive-full
 ```
 
@@ -79,8 +82,10 @@ apt install texlive-full
 ### Installing Pandoc 
 Please install `pandoc` latest version from here `https://github.com/jgm/pandoc/releases/tag/3.1.2` or newer, following the instructions. Please do not use `apt` for installing `pandoc` as the packages are largely outdated (at least for older Ubuntu distributions).
 
+Please also install `pandoc-crossref` as we are now supporting Tex or Typst as back-end.
+
 ## Compiling a lab with the toolchain
-Clone this repository somewhere in your filesystem. Let's consider that the toolchain is installed in `~/build_tool/`. 
+Clone this repository somewhere in your filesystem. Let's consider that the toolchain is installed in `~/build_tool/`.
 
 In order to build the PDF from the `samples/sample_lab/lab-expressions.md` file, run from the location the `md` you want to compile is located :
 
