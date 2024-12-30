@@ -80,27 +80,29 @@
     authors-str = authors.at(0)
   }
 
-  let header-content = text(0.75em)[
-    #emph(authors-str)
+  // Header and footer formatting
+  let header-content = text(0.87em)[
+    #text(title)
     #h(1fr)
-    #emph(version)
+    #date, v#text(version)
   ]
 
-  let footer-content = context text(0.75em)[
-    #emph(title)
+  let footer-content = context text(0.87em)[
+    #text(authors-str) | #emph(ue) #emph(course)
     #h(1fr)
-    #counter(page).display("1/1", both: true)
+    #counter(page).display("1 | 1", both: true)
   ]
 
-  // Set header and footers
+  // Set header and footers insertion
   set page(
     // For pages other than the first one
-    header: context if counter(page).get().first() > 1 {
-      header-content
-    },
+    header: context if counter(page).get().first() > 1 [
+      #header-content
+      #move(dy: -7pt, line(length: 100%, stroke: 0.5pt))
+    ],
     header-ascent: 40%,
     // For pages other than the first one
-    footer: context if counter(page).get().first() > 1 [
+    footer: context if counter(page).get().first() >= 1 [
       #move(dy: 5pt, line(length: 100%, stroke: 0.5pt))
       #footer-content
     ],
@@ -119,20 +121,34 @@
 
   // Block quotations
   set quote(block: true) 
-  show quote: set block(spacing: 18pt) 
-  show quote: set pad (x: 2em)// L&R margins
-  show quote: set par(leading: 8pt) 
-  show quote: set text(style: "italic")
+  // show quote: set block(spacing: 1em, outset: (x:-1em, y:0em), fill: luma(95%), width: 100%) 
+  show quote: set block(spacing: 1em, fill: luma(95%), width: auto) 
+  show quote: set pad(x: 0.9em, y: .6em)// Margins around the block
+  // show quote: set par(leading: 8pt)
+  show quote: set text(fill: luma(50%)) 
+  show quote.where(block: true): block.with(stroke: (left:6pt + black, rest: none))
+
+  // show quote: set text(style: "italic")
 
   // Images and figures:
   set image(width: 5.25in, fit: "contain") 
   show image: it => { align(center, it) }
-  set figure(gap: 0.5em, supplement: none)
-  show figure.caption: set text(size: 9pt)
+
+  // Figure numbering with whole numbers, in bold and with a nice separator
+  set figure(numbering: "1", gap: 0.8em, supplement: "Figure")
+  show figure.caption: c => [
+    #text(fill: black, weight: "bold")[
+     #c.supplement #c.counter.display(c.numbering)
+    ]
+    #c.separator#c.body
+  ]
+
+  show figure.caption: set text(size: 10pt, fill: luma(40%)) // Caption text
+  set figure.caption(separator: "-") // With a nice separator
 
   // Code snippets:
   // show raw: set block(inset: (left: 2em, top: 0.5em, right: 1em, bottom: 0.5em ))
-  // show raw: set text(fill: rgb("#116611"), size: 9pt) //green
+  show raw: set text(fill: rgb("#6b194a"), size: 9pt) //green
 
   // Footnote formatting
   set footnote.entry(indent: 0.5em)
@@ -169,15 +185,17 @@
   // Headings configuration
   show heading: set text(hyphenate: false)
 
+  let line_spacing_around_heading = 0.75em
+
   show heading.where(level: 1
     ):  it => align(left, block(above: 18pt, below: 11pt, width: 100%)[
         #set par(leading: 11pt) // used ?
         //#set text(font: ("Helvetica", "Arial"), weight: "semibold", size: 14pt)
-        #move(dy: 14pt, line(length: 100%, stroke: 0.5pt + luma(20%)))
+        #move(dy: line_spacing_around_heading, line(length: 100%, stroke: 0.5pt + luma(20%)))
         #block(
           it.body
         ) 
-        #move(dy: -14pt, line(length: 100%, stroke: 0.5pt + luma(20%)))
+        #move(dy: -line_spacing_around_heading, line(length: 100%, stroke: 0.5pt + luma(20%)))
         #v(-12pt)
       ])
 
@@ -230,9 +248,9 @@
 
   insert-logo(image("figs_template/ISC_logo_inline_v1_FR.svg"))
 
-  // THIS IS THE ACTUAL BODY:
+  // Now we insert the content, here
   counter(page).update(1)// start page numbering
-  doc// this is where the content goes
+  doc
 
 } // end of #let conf block
 
