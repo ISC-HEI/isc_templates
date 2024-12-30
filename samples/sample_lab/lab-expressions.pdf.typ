@@ -8,6 +8,12 @@
 //      --template=isc_lab_typ  \
 //     -o mylab.pdf
 
+// TODO: 
+// - Figure number not included for typst (comme sur la figure 3)
+// - Equation not displayed similarly to LaTex
+// - How are \newpage handled?
+// - How to edit metadata such as creator ? It seems not feasible at the moment but pdf-meta can be used
+
 #let horizontalrule = [
   #v(1pt)
   #line(start: (25%, 0%), end: (75%, 0%), stroke: 1pt + white)
@@ -36,6 +42,7 @@
   sectionnumbering: none,
   doc,
 ) = {
+
   let body-font = ("Source Sans 3", "Libertinus Serif")
   let sans-font = ("Source Sans 3")
   let raw-font = "Fira Code"
@@ -65,7 +72,8 @@
   //  Basic pagination and typesetting
   /////////////////////////////////////////////////
   set page(
-    margin: (inside: 2cm, outside: 1.5cm, y: 2.1cm), // Binding inside
+    // margin: (inside: 2cm, outside: 1.5cm, y: 2.1cm), // Binding inside
+    margin: (left: 1.8cm, right: 1.5cm, top: 2.5cm, bottom: 2.4cm), // Binding inside
     paper: "a4",
   )
 
@@ -80,27 +88,49 @@
     authors-str = authors.at(0)
   }
 
-  let header-content = text(0.75em)[
-    #emph(authors-str)
+  let content-to-string(content) = {
+    if content.has("text") {
+      content.text
+    } else if content.has("children") {
+      content.children.map(content-to-string).join("")
+    } else if content.has("body") {
+      content-to-string(content.body)
+    } else if content == [ ] {
+      " "
+    }
+  }
+
+  // Set PDF properties
+  set document(
+    title: [Labo 3 -- Test et boucles],
+    author: content-to-string(authors-str),
+    keywords: ("101.1", "Programmation
+impérative", "ISC", "HEI", "Sion"),
+  )
+
+  // Header and footer formatting
+  let header-content = text(0.87em)[
+    #text(title)
     #h(1fr)
-    #emph(version)
+    #date, v#text(version)
   ]
 
-  let footer-content = context text(0.75em)[
-    #emph(title)
+  let footer-content = context text(0.8em)[
+    #text(authors-str) | #emph(ue) #emph(course)
     #h(1fr)
-    #counter(page).display("1/1", both: true)
+    #counter(page).display("1 | 1", both: true)
   ]
 
-  // Set header and footers
+  // Set header and footers insertion
   set page(
     // For pages other than the first one
-    header: context if counter(page).get().first() > 1 {
-      header-content
-    },
-    header-ascent: 40%,
+    header: context if counter(page).get().first() > 1 [
+      #header-content
+      #move(dy: -7pt, line(length: 100%, stroke: 0.5pt))
+    ],
+    header-ascent: 20%,
     // For pages other than the first one
-    footer: context if counter(page).get().first() > 1 [
+    footer: context if counter(page).get().first() >= 1 [
       #move(dy: 5pt, line(length: 100%, stroke: 0.5pt))
       #footer-content
     ],
@@ -119,20 +149,37 @@
 
   // Block quotations
   set quote(block: true) 
-  show quote: set block(spacing: 18pt) 
-  show quote: set pad (x: 2em)// L&R margins
-  show quote: set par(leading: 8pt) 
-  show quote: set text(style: "italic")
+  // show quote: set block(spacing: 1em, outset: (x:-1em, y:0em), fill: luma(95%), width: 100%) 
+  show quote: set block(spacing: 1em, fill: luma(95%), width: auto) 
+  show quote: set pad(x: 0.9em, y: .6em)// Margins around the block
+  // show quote: set par(leading: 8pt)
+  show quote: set text(fill: luma(50%)) 
+  show quote.where(block: true): block.with(stroke: (left:6pt + black, rest: none))
+
+  // show quote: set text(style: "italic")
 
   // Images and figures:
   set image(width: 5.25in, fit: "contain") 
   show image: it => { align(center, it) }
-  set figure(gap: 0.5em, supplement: none)
-  show figure.caption: set text(size: 9pt)
+
+  // Figure numbering with whole numbers, in bold and with a nice separator
+  set figure(numbering: "1", gap: 0.8em, supplement: text("Figure", weight: "bold"))
+
+  // Make the caption like I like them
+  show figure.caption: it => context {
+      if it.numbering == none {
+        it.body
+      } else {
+        text(fill:black, weight: "bold")[#it.supplement #it.counter.display()] + " " + it.separator + it.body
+      }
+    }
+  show figure.caption: set text(size: 10pt, fill: luma(40%)) // Caption text
+  set figure.caption(separator: "-") // With a nice separator
 
   // Code snippets:
-  show raw: set block(inset: (left: 2em, top: 0.5em, right: 1em, bottom: 0.5em ))
-  show raw: set text(fill: rgb("#116611"), size: 9pt) //green
+  // show raw: set block(inset: (left: 2em, top: 0.5em, right: 1em, bottom: 0.5em ))
+  // Set raw text color to something light but nice
+  show raw: set text(fill: rgb("#6b194a"), size: 9pt)
 
   // Footnote formatting
   set footnote.entry(indent: 0.5em)
@@ -143,25 +190,43 @@
   set list(indent: 10pt)//, marker:([•], [‣], [–]))
   set enum(indent: 10pt)
 
-  // Code
-  import "@preview/codly:1.1.1": *
+  // Code blocks configuration
+  set raw(theme: "figs_template/GitHub.tmTheme")
+  import "@preview/codly:1.1.0": *
   import "@preview/codly-languages:0.1.3": *
   show: codly-init.with()
-  codly(languages: codly-languages)
+  codly(
+    languages: codly-languages,
+    smart-indent: true,
+    zebra-fill: none,
+    display-icon: false,
+    display-name: false,
+    number-align: right+top,
+    stroke: .5pt + luma(70),
+    radius: 0.5em,
+    inset: (x: .5em, y: 0.2em),
+    lang-outset: (x: -3pt, y: 5pt),
+    fill: luma(97%),
+  )
+
+  codly(number-format: (n) => box(fill: luma(97%), height: 1em, baseline:5pt, outset: .1em)[#text(luma(140), baseline: .3em, size: .8em)[#str(n)]])
+  
   codly-enable()
 
   // Headings configuration
   show heading: set text(hyphenate: false)
 
+  let line_spacing_around_heading = 0.75em
+
   show heading.where(level: 1
     ):  it => align(left, block(above: 18pt, below: 11pt, width: 100%)[
         #set par(leading: 11pt) // used ?
         //#set text(font: ("Helvetica", "Arial"), weight: "semibold", size: 14pt)
-        #move(dy: 14pt, line(length: 100%, stroke: 0.5pt + luma(20%)))
+        #move(dy: line_spacing_around_heading, line(length: 100%, stroke: 0.5pt + luma(20%)))
         #block(
           it.body
         ) 
-        #move(dy: -14pt, line(length: 100%, stroke: 0.5pt + luma(20%)))
+        #move(dy: -line_spacing_around_heading, line(length: 100%, stroke: 0.5pt + luma(20%)))
         #v(-12pt)
       ])
 
@@ -214,9 +279,9 @@
 
   insert-logo(image("figs_template/ISC_logo_inline_v1_FR.svg"))
 
-  // THIS IS THE ACTUAL BODY:
+  // Now we insert the content, here
   counter(page).update(1)// start page numbering
-  doc// this is where the content goes
+  doc
 
 } // end of #let conf block
 
@@ -460,6 +525,10 @@ le suivant :
   $ {x (t) = a frac(sin t, 1 + cos^2 t)\
   y (t) = a frac(sin t cos t, 1 + cos^2 t)\
    $
+
+$ cases(delim: "{", x & = 3 + 2 sin t, y & = 4 + sin t) $
+
+$ f (n) = cases(delim: "{", n \/ 2 & n upright(" is even"), 3 n + 1 & n upright(" is odd")) $
 
 + Quel est l'effet de $a$ dans le jeu d'équation ci-dessus ?
 

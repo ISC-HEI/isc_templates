@@ -137,10 +137,11 @@ Le lemniscate de Bernoulli est une courbe mathématique dont le tracé est le su
 ![Un lemniscate de Bernoulli\label{fig_lemni}](figs/lemniscate.png){height=3.0cm}
 
 1. Dessinez cette courbe dans laquelle les coordonnées `x` et `y` qui se trouvent sur la courbe sont donnés par l'équation paramétrique suivante (_a_ est une constante) :
-    $$ \left\{\begin{matrix}
-    x(t)=a \frac{\sin t}{1 + \cos^{2} t} \\
-    y(t)=a \frac{\sin t \cos t}{1 + \cos^{2} t} \\
-    \end{matrix}\right.
+    $$
+    \begin{cases}
+        x(t) &= a \frac{\sin t}{1 + \cos^{2} t} \\
+        y(t) &= a \frac{\sin t \cos t}{1 + \cos^{2} t} \\
+    \end{cases}
     $$
 
 1. Quel est l'effet de $a$ dans le jeu d'équation ci-dessus ?
