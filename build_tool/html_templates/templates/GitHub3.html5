@@ -124,18 +124,21 @@ $-- by the CSS file in the finalized template:
   ul{
     margin-top:10px;
     padding: 0;
-    list-style-type:none;
+    list-style-type: disc;
   }
   ul ul {
     margin-left:15px;
+    list-style-type: disc;
   }
-
-  ul li {
-    margin-top:5px;
+  .cstTOC ul li {
+    list-style-type: none;
   }
   ul li ul li {
     visibility:hidden;
     display:none;
+  }
+  ul li ul li:visible {
+    list-style-type:none;
   }
   #title1{
   width:75%;
@@ -239,7 +242,7 @@ function fancyTOC(){
     //console.log(titles[0].getBoundingClientRect())
     // -1 correspond to first title
     var active=-1
-    //The last title to have pased a certain position (1 pixel from 
+    //The last title to have passed a certain position (1 pixel from 
     //the top here) is considered as the "active" title
     for(var i=1;i<titles.length-1;i++){
       //console.log(titles[i])
@@ -252,7 +255,7 @@ function fancyTOC(){
     }
     //iterate over all link titles in the TOC as well as their sub elements to change them
     //according to the "active" title. Html collections contains "ghost elements" not present
-    //in the page html wich must be jumped over, hence the weird active detection  
+    //in the page html which must be jumped over, hence the weird active detection  
     for(var i= 1;i<toc[0].childNodes[3].childNodes.length;i+=2){
         if(active*2+1==i){
             //borders of the active part
