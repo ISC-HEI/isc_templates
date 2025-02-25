@@ -354,7 +354,7 @@ $if(title)$
 <h1 class="title$if(subtitle)$ followed-by-subtitle$endif$" id="title1" style="font-size:3em;border-bottom:none; margin-bottom:0;">$title$</h1>
 <img src="figs/ISC_Logo_inline_v1_FR.svg" style="width:300px;"/>
 </div>
-<h4><p class="subtitle">$course$ - $version$</p></h4>
+<h4><p class="subtitle">$course$ - $version$ - $author$</p></h4>
 $---------------------------------------------------------------------> subtitle
 $if(subtitle)$
 <p class="course">$course$</p> - <p class="subtitle">$subtitle$</p> - <p class="version">$version$</p>

@@ -11,7 +11,6 @@
 // TODO: 
 // - Footnotes not tested yet
 // - Figure number not included for typst (comme sur la figure 3)
-// - Equation not displayed similarly to LaTex --> almost fixed, have to increase space between equations
 // - How are \newpage handled?
 // - How to edit metadata such as creator ? It seems not feasible at the moment but pdf-meta can be used
 
