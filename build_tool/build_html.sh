@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="1.0.7"
+VERSION="1.0.8"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 DIR="."
 MATH_ENGINE="katex"
@@ -75,11 +75,15 @@ pushd "$DIR" || exit
 # options for maths is mathjax, mathml, katex, webtex
 # mathml is fast but ugly. katex is fine
 
+PANDOC_OPTIONS="--from markdown+tex_math_dollars+raw_tex+emoji --${MATH_ENGINE} --data-dir=$SCRIPT_DIR/html_templates --template=${TEMPLATE} --embed-resources --standalone --strip-comments"
+LUA_FILTERS="--lua-filter $SCRIPT_DIR/lua_filters/replace_stars.lua"
+TOC_OPTIONS=""
+
 if $TOC; then
-    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="${TEMPLATE}" --toc --toc-depth=2 --embed-resources --standalone --strip-comments
-else
-    pandoc "${input}" -o "${output}" --from markdown+tex_math_dollars+raw_tex+emoji --"${MATH_ENGINE}" --data-dir="$SCRIPT_DIR/html_templates" --template="${TEMPLATE}" --embed-resources --standalone --strip-comments
+   TOC_OPTIONS="--toc --toc-depth=2"
 fi
+
+pandoc "${input}" $PANDOC_OPTIONS $TOC_OPTIONS $LUA_FILTERS -o "${output}" 
 
 if [ -n "$DEST_PDF" ]; then
    echo "Output generated in ${output} and copied to directory ${DEST_PDF}"   
