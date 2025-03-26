@@ -1,17 +1,19 @@
 #!/bin/bash
-VERSION="1.0.1"
+VERSION="1.0.2"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 DIR="."
 TEMPLATE="isc_lab.tex"
+
+echo "- Pandoc builder for ISC - ${VERSION}"
 
 ############################################################
 # Process the input options. Add options as needed.        #
 ############################################################
 # Get the options
-while getopts ":i:n:t:h:o:" option; do
+while getopts ":i:n:ho:t" option; do
    case $option in
       i) # Input file
-         input="$OPTARG"         
+         input="$OPTARG"
          ;;
       n) # Working directory
          DIR="$OPTARG"
@@ -20,11 +22,16 @@ while getopts ":i:n:t:h:o:" option; do
          echo "- Using oral exam template"
          TEMPLATE="isc_oral_exam.tex"
          ;;
-      h) # not yet implemented         
-         echo "For building an oral exam using the specific template switch, -t"
+      h) # help message
+         echo "Usage: $0 [-i input] [-n directory] [-t] [-h] [-o destination]"
+         echo "  -i input: Specify the input markdown file"
+         echo "  -n directory: Specify the working directory"
+         echo "  -t: Use the oral exam template"
+         echo "  -h: Display this help message"
+         echo "  -o destination: Specify the destination directory for the PDF file"
          exit
          ;;
-      o) # Destination of PDF file        
+      o) # Destination of PDF file
          DEST_PDF="$OPTARG"
          ;;
       \?) # Invalid option
@@ -51,7 +58,7 @@ pushd "$DIR" || exit
 
 # Creating the document, using XeTex as engine
 # We also pass the current script directory path for pandoc to find the template. We also require to pass the toolchain directory for including the image once. For this reason, we pass the location of the directory as a variable (which is not escaped by pandoc, and not as a metadata (which is the same as the values given in the YAML header of the .md))
-pandoc "${input}" -o "${output}" --pdf-engine=lualatex --from markdown+tex_math_dollars+raw_tex --template="$SCRIPT_DIR/$TEMPLATE" --listings -V colorlinks --number-sections --variable=TOOLCHAINPATH:"$SCRIPT_DIR" --metadata=DRAFT:false --metadata=GENERATORVERSION:"$VERSION" --lua-filter $SCRIPT_DIR/lua_filters/replace_stars.lua  #--verbose
+pandoc "${input}" -o "${output}" --pdf-engine=lualatex --from markdown+tex_math_dollars+raw_tex --template="$SCRIPT_DIR/$TEMPLATE" --listings -V colorlinks --number-sections --variable=TOOLCHAINPATH:"$SCRIPT_DIR" --metadata=DRAFT:false --metadata=GENERATORVERSION:"$VERSION" --lua-filter $SCRIPT_DIR/lua_filters/replace_stars.lua # --verbose
 
 if [ -n "$DEST_PDF" ]; then    
    echo "- Output generated in ${output} and copied to PDF directory ${DEST_PDF}"   

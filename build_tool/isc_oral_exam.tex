@@ -1,5 +1,5 @@
 %%
-% ISC Lab template - mui 2023
+% ISC oral exam template - mui 2023
 % using prologue as a parameter in pandoc command line
 % Let's inject the metadata, and begin stuff
 %%
@@ -114,6 +114,31 @@ $endif$
 
 \usepackage{setspace}
 \setstretch{1.2}
+
+% Here
+
+$if(graphics)$
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+$endif$
+
+$if(svg)$
+\usepackage{svg}
+$endif$
+
 
 \usepackage{ifxetex,ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
