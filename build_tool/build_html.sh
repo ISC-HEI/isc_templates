@@ -33,7 +33,7 @@ while getopts ":x:m:o:n:th" option; do
          echo "Using template $TEMPLATE"
          ;; 
       n ) # Enter a file name
-         DIR="$OPTARG" 
+         INPUT_FILE="$OPTARG"
          ;;
       h ) # not yet implemented
          Help
@@ -57,16 +57,20 @@ done
 
 shift $((OPTIND -1))
 
-file=("$DIR"/*.md)
-input=${file[0]}
-
-if [ -z "$input" ]; then
-    echo "No .md file found in $DIR"
-    exit 1
+if [ -n "$INPUT_FILE" ]; then
+    input="$INPUT_FILE"
+    DIR=$(dirname "$input")
+    input=$(basename "$input")
+else
+    file=("$DIR"/*.md)
+    input=${file[0]}
+    if [ -z "$input" ] || [ ! -f "$input" ]; then
+        echo "No .md file found in $DIR"
+        exit 1
+    fi
 fi
 
 echo "Compiling file '${input}'"
-input=$(basename "$input")
 output=${input/'.md'/'.html'}
 
 pushd "$DIR" || exit
